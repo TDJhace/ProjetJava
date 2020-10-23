@@ -1,4 +1,4 @@
-package ControlCenter;
+package  ControlCenter;
 
 import java.util.Scanner;
 
