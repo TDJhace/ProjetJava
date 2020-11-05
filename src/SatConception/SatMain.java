@@ -1,6 +1,8 @@
 package SatConception;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -28,8 +30,11 @@ public class SatMain {
                 String satDir = "src/CHANNELS/" + satName + "/UPLINK";
                 File testFile = new File(satDir);
                 if (testFile.canRead()) {
-                    FileReader in = new FileReader(filename);
+                    FileReader in = new FileReader(satDir);
                     BufferedReader bin = new BufferedReader(in);
+                    String command = bin.readLine();
+                    bin.close();
+                    testFile.delete();
                 }
             }
         }
