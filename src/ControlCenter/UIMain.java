@@ -10,12 +10,18 @@ public class UIMain {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
+
         DataCenter allDatas = new DataCenter();
 
         // Now we can begin to create satellites by adding them to allDatas
-        allDatas.addSat(new Fam1("SAT1"));
-        allDatas.addSat(new Fam1("SAT2"));
-        allDatas.addSat(new Fam2("SAT"));
+
+        try {
+            allDatas.addSat(new Fam1("SAT1"));
+            allDatas.addSat(new Fam1("SAT2"));
+            allDatas.addSat(new Fam2("SAT"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -32,6 +38,7 @@ public class UIMain {
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
+                allDatas.endProgram();
                 System.out.println("Good Bye !");
                 break;
             } else if (instruction.equals("EXAMPLES")) {

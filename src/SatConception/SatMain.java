@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class SatMain {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Welcome in the Satellite Main Program.");
         System.out.println("You basically have nothing to do.");
         System.out.println("Just press Crtl + C when your job is done.");
@@ -20,7 +19,6 @@ public class SatMain {
             for (String satName : listSat) {
                 String satDir = "src/CHANNELS/" + satName + "/UPLINK";
                 File testFile = new File(satDir);
-                System.out.println("prout");
                 if (testFile.canRead()) {
                     FileReader in = new FileReader(satDir);
                     BufferedReader bin = new BufferedReader(in);
@@ -29,6 +27,8 @@ public class SatMain {
                     testFile.delete();
                 }
             }
+
+            Thread.sleep(100);
 
         }
 

@@ -3,6 +3,7 @@ package Datas;
 import java.util.ArrayList;
 
 import SatConception.Satellite;
+import java.io.File;
 
 /**
  * The DataCenter class is the major class : it contains and refers all the
@@ -39,8 +40,9 @@ public class DataCenter {
      * Just a simple method to add a satellite to the DataCenter.
      * 
      * @param dat the data to be added
+     * @throws Exception
      */
-    public void addSat(Satellite sat) throws IllegalArgumentException {
+    public void addSat(Satellite sat) throws Exception {
 
         if (sat != null) {
             for (Satellite existingSats : this.listSats) {
@@ -51,6 +53,14 @@ public class DataCenter {
                 }
             }
             this.listSats.add(sat);
+
+            String satDir = "src/CHANNELS/" + sat.getName() + "/";
+            File file = new File(satDir);
+            if (!file.exists() && !file.mkdir()) {
+                throw new Exception(
+                        "A problem occured during the creation of the satellite directory. Please delete any existing File in the CHANNELS directory.");
+            }
+
         }
 
     }
@@ -111,6 +121,14 @@ public class DataCenter {
                 System.out.println("KO");
             }
 
+        }
+
+    }
+
+    public void endProgram() {
+        ArrayList<String> listSatNames = new ArrayList<>();
+        for (Satellite sat : this.listSats) {
+            listSatNames.add(sat.getName());
         }
 
     }
