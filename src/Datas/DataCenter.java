@@ -125,10 +125,27 @@ public class DataCenter {
 
     }
 
-    public void endProgram() {
-        ArrayList<String> listSatNames = new ArrayList<>();
+    /**
+     * This function just deletes alle the existing files (not the directories !) in
+     * the CHANNELS directory.
+     * 
+     * @throws Exception
+     */
+    public void endProgram() throws Exception {
+
         for (Satellite sat : this.listSats) {
-            listSatNames.add(sat.getName());
+
+            File referenceFile = new File("src/CHANNELS/" + sat.getName());
+            String[] listFile = referenceFile.list(); // it contains all the directory names in CHANNELS
+
+            for (String filename : listFile) {
+                System.out.println(filename);
+                File delFile = new File("src/CHANNELS/" + sat.getName() + "/" + filename);
+                if (delFile.exists()) {
+                    delFile.delete();
+                }
+            }
+
         }
 
     }

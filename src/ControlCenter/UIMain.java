@@ -20,7 +20,8 @@ public class UIMain {
             allDatas.addSat(new Fam1("SAT2"));
             allDatas.addSat(new Fam2("SAT"));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Fatal Error. The program exits automatically.");
+            System.exit(0);
         }
 
         // Now it begins with all the scanner part
@@ -38,7 +39,12 @@ public class UIMain {
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
-                allDatas.endProgram();
+                try {
+                    allDatas.endProgram();
+                } catch (Exception e) {
+                    System.out.println("An error occured.");
+                    e.printStackTrace();
+                }
                 System.out.println("Good Bye !");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
@@ -53,14 +59,19 @@ public class UIMain {
                 Scanner s = new Scanner(instruction).useDelimiter(":");
 
                 // We obtains the values of the command
-                satName = s.next();
-                compName = s.next();
-                typeInstruction = s.next();
+                try {
+                    satName = s.next();
+                    compName = s.next();
+                    typeInstruction = s.next();
+
+                    // We can begin the process
+                    allDatas.teleOperation(satName, compName, typeInstruction);
+                } catch (Exception e) {
+                    System.out.println("Please write a correct command.");
+                }
 
                 s.close();
 
-                // We can begin the process
-                allDatas.teleOperation(satName, compName, typeInstruction);
             }
         }
         sc.close();
