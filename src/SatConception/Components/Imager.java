@@ -2,7 +2,7 @@ package SatConception.Components;
 
 import Datas.Data;
 import SatConception.Comps;
-import java.awt.image.BufferedImage;
+
 
 /**
  * The class Imager represents the components taking a gray picture.
@@ -26,7 +26,9 @@ public class Imager extends Comps {
      */
     @Override
     protected Data getMeasure(String satName) {
-        Data randomData = new Data(satName, this.name, new BufferedImage(400, 400, BufferedImage.TYPE_BYTE_GRAY));
+        int[][] img = new int[3][3];
+
+        Data randomData = new Data(satName, this.name, img);
         return randomData;
     }
 

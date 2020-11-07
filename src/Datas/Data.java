@@ -1,5 +1,6 @@
 package Datas;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,7 +8,11 @@ import java.util.Date;
  * Tha Data Class is basically the class representing, as its name indicates, a
  * data.
  */
-public class Data {
+public class Data implements Serializable{
+    /**
+     * Added to be able to write data on a binary file.
+     */
+    private static final long serialVersionUID = 1L;
     protected Object value;
     protected String satName;
     protected String compName;

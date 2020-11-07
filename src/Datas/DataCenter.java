@@ -1,6 +1,7 @@
 package Datas;
 
 import java.util.ArrayList;
+import java.io.*;
 
 import SatConception.Satellite;
 
@@ -89,8 +90,9 @@ public class DataCenter {
      *                        satellite
      * @param typeInstruction a String containing the instruction : basically, "ON",
      *                        "OFF" or "DATA"
+     * @throws IOException
      */
-    public void teleOperation(String satName, String compName, String typeInstruction) {
+    public void teleOperation(String satName, String compName, String typeInstruction, int seq) throws IOException {
 
         Satellite aimedSat = this.getSatByName(satName);
 
@@ -104,7 +106,9 @@ public class DataCenter {
 
                 // If the satellite is OK, and that we want a measure, we can do it
                 if (typeInstruction.equals("DATA")) {
+
                     this.addData(aimedSat.getData(compName));
+                    this.saveData(satName, seq,aimedSat.getData(compName));
                 }
 
             } else {
@@ -112,6 +116,17 @@ public class DataCenter {
             }
 
         }
+
+    }
+
+    public void saveData(String nameSat,int seq, Data dat) throws IOException{
+        
+        String path = "DATA"+nameSat+"000000"+seq+".bin";
+        //System.out.println(path);
+        FileOutputStream fl = new FileOutputStream(path);
+        ObjectOutputStream oos = new ObjectOutputStream(fl);
+        oos.writeObject(dat);
+        oos.close();
 
     }
 

@@ -1,5 +1,6 @@
 package ControlCenter;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import Datas.DataCenter;
@@ -8,7 +9,7 @@ import SatConception.Family.*;
 //Hi I commited something !
 
 public class UIMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
@@ -25,12 +26,15 @@ public class UIMain {
         String typeInstruction = "";
 
         Scanner sc = new Scanner(System.in);
+        int seq =0;
         System.out.println("Hello. Welcome in the ISAE Satellites Management UI.");
         System.out.println("Enter a command below.");
         System.out.println("For command examples, enter EXAMPLES. Enter EXIT when the work is done.");
 
         while (sc.hasNext()) {
+
             String instruction = sc.next();
+        
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
@@ -52,10 +56,14 @@ public class UIMain {
                 compName = s.next();
                 typeInstruction = s.next();
 
+                if(typeInstruction.equals("DATA")){
+                    seq ++;
+                }
+
                 s.close();
 
                 // We can begin the process
-                allDatas.teleOperation(satName, compName, typeInstruction);
+                allDatas.teleOperation(satName, compName, typeInstruction, seq);
             }
         }
         sc.close();

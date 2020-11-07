@@ -78,7 +78,8 @@ public abstract class Satellite {
      * @param compName the name of the component
      * @return a corresponding data
      */
-    public Data getData(String compName) {
+    
+     public Data getData(String compName) {
         Comps compSat = this.getCompByName(compName);
         if (compSat == null) {
             // the component doesn't exist
