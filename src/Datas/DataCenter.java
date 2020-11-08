@@ -3,7 +3,8 @@ package Datas;
 import java.util.ArrayList;
 
 import SatConception.Satellite;
-import java.io.File;
+
+import java.io.*;
 
 /**
  * The DataCenter class is the major class : it contains and refers all the
@@ -12,7 +13,7 @@ import java.io.File;
 public class DataCenter {
 
     private ArrayList<Satellite> listSats;
-    private ArrayList<Data> listDatas;
+    private ArrayList<String> listDatas;
 
     /**
      * @param listSats  is an ArrayList of the Satellites in order to store them
@@ -21,7 +22,7 @@ public class DataCenter {
      */
     public DataCenter() {
         this.listSats = new ArrayList<Satellite>();
-        this.listDatas = new ArrayList<Data>();
+        this.listDatas = new ArrayList<String>();
     }
 
     /**
@@ -29,7 +30,7 @@ public class DataCenter {
      * 
      * @param dat the data to be added
      */
-    public void addData(Data dat) {
+    public void addData(String dat) {
         if (dat != null) {
             this.listDatas.add(dat);
         }
@@ -65,7 +66,7 @@ public class DataCenter {
 
     }
 
-    public ArrayList<Data> getDatas() {
+    public ArrayList<String> getDatas() {
         return this.listDatas;
     }
 
@@ -99,8 +100,16 @@ public class DataCenter {
      *                        satellite
      * @param typeInstruction a String containing the instruction : basically, "ON",
      *                        "OFF" or "DATA"
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
      */
-    public void teleOperation(String satName, String compName, String typeInstruction) {
+    public void teleOperation(String satName, String compName, String typeInstruction)
+            throws IOException, InterruptedException, ClassNotFoundException {
+
+        // We use tha data center as a copy of the statement of the gloabl system
+        // For example, below, we use the infos in the datacenter to be sure that a
+        // correct satname was given
 
         Satellite aimedSat = this.getSatByName(satName);
 
@@ -108,17 +117,44 @@ public class DataCenter {
             // The satellite doesn't exist in the database
             System.out.println("Sorry, this satellite is not registered in the database.");
         } else {
-            // The satellite exists in the database
-            if (aimedSat.operation(compName, typeInstruction)) {
-                System.out.println("OK");
+            // The given name is correct, we can create a channel file
+            String satDir = "src/CHANNELS/" + satName + "/";
 
-                // If the satellite is OK, and that we want a measure, we can do it
-                if (typeInstruction.equals("DATA")) {
-                    this.addData(aimedSat.getData(compName));
-                }
+            File uplinkFile = new File(satDir + "UPLINK");
+            uplinkFile.createNewFile();
 
-            } else {
-                System.out.println("KO");
+            PrintWriter writer = new PrintWriter(uplinkFile);
+            writer.println(compName);
+            writer.println(typeInstruction);
+            writer.close();
+
+            File downlinkFile = new File(satDir + "DOWNLINK");
+
+            while (!downlinkFile.exists()) {
+                Thread.sleep(100); // in order to wait for the downlink file to be created and to block all the
+                                   // rest of the commands in the control center
+            }
+
+            FileReader in = new FileReader(satDir + "DOWNLINK");
+            BufferedReader bin = new BufferedReader(in);
+            String status = bin.readLine();
+            bin.close();
+            downlinkFile.delete();
+
+            System.out.println(status);
+
+            // We now take care of the data (if there is one)
+            Thread.sleep(100);
+            if (typeInstruction.equals("DATA") && status.equals("OK")) {
+                Thread.sleep(100);
+                Object obtainedData;
+                ObjectInputStream inData = new ObjectInputStream(
+                        new BufferedInputStream(new FileInputStream(satDir + "DATALINK")));
+                obtainedData = inData.readObject();
+                inData.close();
+                File datalink = new File(satDir + "DATALINK");
+                datalink.delete();
+                this.addData(obtainedData.toString());
             }
 
         }
@@ -126,26 +162,36 @@ public class DataCenter {
     }
 
     /**
-     * This function just deletes alle the existing files (not the directories !) in
+     * This function just deletes all the existing files (not the directories !) in
      * the CHANNELS directory.
      * 
      * @throws Exception
      */
     public void endProgram() throws Exception {
 
-        for (Satellite sat : this.listSats) {
+        // for (Satellite sat : this.listSats) {
 
-            File referenceFile = new File("src/CHANNELS/" + sat.getName());
-            String[] listFile = referenceFile.list(); // it contains all the directory names in CHANNELS
+        // File referenceFile = new File("src/CHANNELS/" + sat.getName());
+        // String[] listFile = referenceFile.list();
 
-            for (String filename : listFile) {
-                System.out.println(filename);
-                File delFile = new File("src/CHANNELS/" + sat.getName() + "/" + filename);
-                if (delFile.exists()) {
-                    delFile.delete();
-                }
+        // for (String filename : listFile) {
+        // System.out.println(filename);
+        // File delFile = new File("src/CHANNELS/" + sat.getName() + "/" + filename);
+        // if (delFile.exists()) {
+        // delFile.delete();
+        // }
+        // }
+
+        // }
+
+        File referenceFile = new File("src/CHANNELS/");
+        String[] listFile = referenceFile.list();
+
+        for (String filename : listFile) {
+            File delFile = new File("src/CHANNELS/" + filename);
+            if (delFile.exists()) {
+                delFile.delete();
             }
-
         }
 
     }

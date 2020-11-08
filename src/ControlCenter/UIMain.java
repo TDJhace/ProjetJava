@@ -1,5 +1,7 @@
 package ControlCenter;
 
+import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import Datas.DataCenter;
@@ -13,8 +15,17 @@ public class UIMain {
 
         DataCenter allDatas = new DataCenter();
 
-        // Now we can begin to create satellites by adding them to allDatas
+        // We delete all the existing files in the directories
+        try {
+            allDatas.endProgram();
+        } catch (Exception e) {
+            System.out.println("An error occured.");
+            e.printStackTrace();
+        }
 
+        // Now we can begin to create satellites by adding them to allDatas
+        // Moreover, it creates the satellite CHANNELS directories if they don't exist
+        // yet
         try {
             allDatas.addSat(new Fam1("SAT1"));
             allDatas.addSat(new Fam1("SAT2"));
@@ -50,7 +61,7 @@ public class UIMain {
             } else if (instruction.equals("EXAMPLES")) {
                 System.out.println("\nHere are a few command examples :");
                 System.out.println("FAM1SAT1:IMAGER1:ON");
-                System.out.println("FAM2SAT:RANDOMDOUBLE:DATA");
+                System.out.println("FAM2SAT:RANDOM1:DATA");
                 System.out.println("FAM1SAT2:IMAGER2:OFF\n");
                 System.out.println("Enter a command below.");
             } else {
@@ -66,8 +77,18 @@ public class UIMain {
 
                     // We can begin the process
                     allDatas.teleOperation(satName, compName, typeInstruction);
-                } catch (Exception e) {
+                } catch (NoSuchElementException e) {
                     System.out.println("Please write a correct command.");
+                } catch (IOException e) {
+                    System.out.println("An error occured with the CHANNEL files. The program exits automatically.");
+                    e.printStackTrace();
+                    System.out.println(e.getLocalizedMessage());
+                    System.exit(0);
+                } catch (InterruptedException e) {
+                    System.out.println("A fatal error occured. The program exits automatically.");
+                    System.exit(0);
+                } catch (ClassNotFoundException e) {
+                    System.err.println("bite");
                 }
 
                 s.close();
