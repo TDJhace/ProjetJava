@@ -9,7 +9,7 @@ import SatConception.Family.*;
 //Hi I commited something !
 
 public class UIMain {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
@@ -17,8 +17,11 @@ public class UIMain {
 
         // Now we can begin to create satellites by adding them to allDatas
         allDatas.addSat(new Fam1("SAT1"));
+        allDatas.CreateSeq("FAM1SAT1");
         allDatas.addSat(new Fam1("SAT2"));
+        allDatas.CreateSeq("FAM1SAT2");
         allDatas.addSat(new Fam2("SAT"));
+        allDatas.CreateSeq("FAM2SAT");
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -26,7 +29,6 @@ public class UIMain {
         String typeInstruction = "";
 
         Scanner sc = new Scanner(System.in);
-        int seq =0;
         System.out.println("Hello. Welcome in the ISAE Satellites Management UI.");
         System.out.println("Enter a command below.");
         System.out.println("For command examples, enter EXAMPLES. Enter EXIT when the work is done.");
@@ -60,9 +62,12 @@ public class UIMain {
                 s.close();
 
                 // We can begin the process
+                int seq = allDatas.getSeq(satName);
+                System.out.println(seq);
                 allDatas.teleOperation(satName, compName, typeInstruction, seq);
+                
                 if(data_size < allDatas.getDatas().size()){
-                    seq ++;
+                    allDatas.updateSeq(satName);    
                 }
             }
         }

@@ -130,4 +130,30 @@ public class DataCenter {
 
     }
 
+    public void CreateSeq(String nameSat) throws IOException{
+        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
+        FileOutputStream fl = new FileOutputStream(path);
+        ObjectOutputStream oos = new ObjectOutputStream(fl);
+        oos.writeInt(0);
+        oos.close();
+    }
+
+    public void updateSeq(String nameSat)throws IOException, ClassNotFoundException {
+        int seq = this.getSeq(nameSat);
+        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
+        FileOutputStream fl = new FileOutputStream(path, false);
+        ObjectOutputStream oos = new ObjectOutputStream(fl);
+        seq ++;
+        oos.writeInt(seq);
+        oos.close();
+    }
+
+    public int getSeq(String nameSat)  throws IOException, ClassNotFoundException {
+        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
+        FileInputStream fis = new FileInputStream(path);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        int seq = ois.readInt();
+        ois.close();
+        return seq;
+    }
 }
