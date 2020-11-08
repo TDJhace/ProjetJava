@@ -7,7 +7,11 @@ import java.util.Date;
  * Tha Data Class is basically the class representing, as its name indicates, a
  * data.
  */
-public class Data {
+public class Data implements java.io.Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     protected Object value;
     protected String satName;
     protected String compName;
