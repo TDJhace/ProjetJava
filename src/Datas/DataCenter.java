@@ -121,7 +121,7 @@ public class DataCenter {
 
     public void saveData(String nameSat,int seq, Data dat) throws IOException{
         
-        String path = "DATA"+nameSat+"000000"+seq+".bin";
+        String path = "ProjetJava/DataFiles/DATA"+nameSat+"000000"+seq+".bin";
         //System.out.println(path);
         FileOutputStream fl = new FileOutputStream(path);
         ObjectOutputStream oos = new ObjectOutputStream(fl);

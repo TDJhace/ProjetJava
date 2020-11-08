@@ -33,6 +33,7 @@ public class UIMain {
 
         while (sc.hasNext()) {
 
+            int data_size = allDatas.getDatas().size();
             String instruction = sc.next();
         
             if (instruction.equals("EXIT")) {
@@ -56,14 +57,13 @@ public class UIMain {
                 compName = s.next();
                 typeInstruction = s.next();
 
-                if(typeInstruction.equals("DATA")){
-                    seq ++;
-                }
-
                 s.close();
 
                 // We can begin the process
                 allDatas.teleOperation(satName, compName, typeInstruction, seq);
+                if(data_size < allDatas.getDatas().size()){
+                    seq ++;
+                }
             }
         }
         sc.close();

@@ -1,6 +1,7 @@
 package Datas;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,8 +39,45 @@ public class Data implements Serializable{
 
     @Override
     public String toString() {
-        return "{" + " value='" + value.toString() + "'" + ", satName='" + satName + "'" + ", compName='" + compName
+        return "{" + "value='"+this.valString()+ "'" + ", satName='" + satName + "'" + ", compName='" + compName
                 + "'" + ", timeData='" + timeData + "'" + "}";
     }
+
+    public String valString(){
+        if(this.value instanceof int[][]){
+            return (Arrays.deepToString((Object[]) this.value));
+        }
+        else{
+            return this.value.toString();
+        }
+    }
+    
+    public String valType(){
+        if(this.value instanceof int[][]){
+            return("matrix");
+        }
+        if(this.value instanceof Double){
+            return("double");
+        }
+        else{
+            return("invalid type");
+        }
+    }
+
+    public String getSatName() {
+        return this.satName;
+    }
+
+    public String getCompName() {
+        return this.compName;
+    }
+
+    public Date getTimeData() {
+        return this.timeData;
+    }
+
+  
+
+    
 
 }
