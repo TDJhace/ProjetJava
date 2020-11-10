@@ -135,7 +135,7 @@ public class DataCenter {
                                    // rest of the commands in the control center
             }
 
-            Thread.sleep(20); // I put a delay in execution here in order to be sure that the file had enough
+            Thread.sleep(50); // I put a delay in execution here in order to be sure that the file had enough
                               // time to be well created
             // In fact, I had issues without this delay
 
@@ -148,17 +148,20 @@ public class DataCenter {
             System.out.println(status);
 
             // We now take care of the data (if there is one)
-
-            if (typeInstruction.equals("DATA") && status.equals("OK")) {
-                Thread.sleep(100);
-                Object obtainedData;
-                ObjectInputStream inData = new ObjectInputStream(
-                        new BufferedInputStream(new FileInputStream(satDir + "DATALINK")));
-                obtainedData = inData.readObject();
-                inData.close();
-                File datalink = new File(satDir + "DATALINK");
-                datalink.delete();
-                this.addData(obtainedData.toString());
+            try {
+                if (typeInstruction.equals("DATA") && status.equals("OK")) {
+                    Thread.sleep(100);
+                    Object obtainedData;
+                    ObjectInputStream inData = new ObjectInputStream(
+                            new BufferedInputStream(new FileInputStream(satDir + "DATALINK")));
+                    obtainedData = inData.readObject();
+                    inData.close();
+                    File datalink = new File(satDir + "DATALINK");
+                    datalink.delete();
+                    this.addData(obtainedData.toString());
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Small System Error. The datas weren't comprised. The execution isn't stopped.");
             }
 
         }
