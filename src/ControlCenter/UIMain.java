@@ -41,6 +41,7 @@ public class UIMain {
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
+                System.out.println(allDatas.getSeq("FAM1SAT1"));
                 System.out.println("Good Bye !");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
@@ -63,7 +64,6 @@ public class UIMain {
 
                 // We can begin the process
                 int seq = allDatas.getSeq(satName);
-                System.out.println(seq);
                 allDatas.teleOperation(satName, compName, typeInstruction, seq);
                 
                 if(data_size < allDatas.getDatas().size()){

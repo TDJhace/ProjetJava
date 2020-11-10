@@ -1,25 +1,37 @@
 package DataSearch;
 
-import java.io.*;
-import Datas.*;
+import java.util.*;
+
+import Datas.DataCenter;
+
+//import java.io.*;
+//import Datas.*;
 
 public class DataSearcherMain {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         DataSearcher dtSearch = new DataSearcher();
-        File dir = new File("ProjetJava/DataFiles");
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                System.out.println(child.toString());
-                FileInputStream fis = new FileInputStream(child.toString());
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                Data dt = (Data) ois.readObject();
-                dtSearch.addSat(dt.getSatName(), child.toString());
-                dtSearch.addDate(dt.getTimeData().toString(), child.toString());
-                dtSearch.addData(dt.valType(), child.toString());
-                ois.close();
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> lfiles = new ArrayList<>();
+        System.out.println("Welcome to our data search software !");
+        System.out.println("You can search any data made by a satellite, according to the following criteria");
+        System.out.println("From date1 to date 2;data type; name of satellite");
+        System.out.println("If you don't want to take one of the criteria on account");
+        System.out.println("If you want to see an example of command please type EXAMPLE");
+        while(sc.hasNext()){
+            String instruction = sc.nextLine();
+            if(instruction.equals("QUIT")){
+                System.out.println("Bye !");
+                sc.close();
+            }
+            else if(instruction.equals("EXAMPLE")){
+                System.out.println("Tue Nov 10 15:26:31/Tue Nov 10 15:28:11;matrix;FAM1SAT1");
+            }
+            else{
+                System.out.println(instruction);
+                lfiles = dtSearch.SearchData(instruction);
+                dtSearch.displayList(lfiles);
             }
         }
-        System.out.println(dtSearch.toString());
+        sc.close();
     }
 }

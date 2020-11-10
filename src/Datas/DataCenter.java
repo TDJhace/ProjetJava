@@ -1,6 +1,7 @@
 package Datas;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.io.*;
 
 import SatConception.Satellite;
@@ -131,16 +132,35 @@ public class DataCenter {
     }
 
     public void CreateSeq(String nameSat) throws IOException{
-        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
-        FileOutputStream fl = new FileOutputStream(path);
-        ObjectOutputStream oos = new ObjectOutputStream(fl);
-        oos.writeInt(0);
-        oos.close();
+        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
+        File dir = new File("ProjetJava/SatSequence");
+        File[] directoryListing = dir.listFiles();
+        int flag = 0;
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                path = path.replaceAll("/", Matcher.quoteReplacement(File.separator));
+                //System.out.println(path);
+                //System.out.println(child.toString());
+                String st = child.toString();
+                flag = path.compareTo(st);
+                if(flag == 0){
+                    break;
+                }
+            }
+            //System.out.println(flag);
+            if(flag != 0 || directoryListing.length == 0){
+                //System.out.println("A new file is created");
+                FileOutputStream fl = new FileOutputStream(path);
+                ObjectOutputStream oos = new ObjectOutputStream(fl);
+                oos.writeInt(0);
+                oos.close();
+            }
+        }
     }
 
     public void updateSeq(String nameSat)throws IOException, ClassNotFoundException {
         int seq = this.getSeq(nameSat);
-        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
+        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
         FileOutputStream fl = new FileOutputStream(path, false);
         ObjectOutputStream oos = new ObjectOutputStream(fl);
         seq ++;
@@ -149,7 +169,7 @@ public class DataCenter {
     }
 
     public int getSeq(String nameSat)  throws IOException, ClassNotFoundException {
-        String path = "ProjetJava/src/Datas/DATA"+nameSat+"NEXTSEQ.bin";
+        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
         FileInputStream fis = new FileInputStream(path);
         ObjectInputStream ois = new ObjectInputStream(fis);
         int seq = ois.readInt();
