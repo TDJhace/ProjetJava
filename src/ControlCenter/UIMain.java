@@ -88,7 +88,7 @@ public class UIMain {
                     System.out.println("A fatal error occured. The program exits automatically.");
                     System.exit(0);
                 } catch (ClassNotFoundException e) {
-                    System.err.println("bite");
+                    System.err.println("Unknown error.");
                 }
 
                 s.close();
