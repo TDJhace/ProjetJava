@@ -168,7 +168,7 @@ public class DataSearcher {
 
         else if(satscriteria.equals("NONE")){
             for(String key : getHsat().keySet()){
-                ldata.addAll(getHsat().get(key));
+                lsat.addAll(getHsat().get(key));
             }
         }
 

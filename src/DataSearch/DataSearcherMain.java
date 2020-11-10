@@ -2,8 +2,6 @@ package DataSearch;
 
 import java.util.*;
 
-import Datas.DataCenter;
-
 //import java.io.*;
 //import Datas.*;
 
@@ -20,8 +18,9 @@ public class DataSearcherMain {
         while(sc.hasNext()){
             String instruction = sc.nextLine();
             if(instruction.equals("QUIT")){
-                System.out.println("Bye !");
                 sc.close();
+                System.out.println("Bye !");
+                break;
             }
             else if(instruction.equals("EXAMPLE")){
                 System.out.println("Tue Nov 10 15:26:31/Tue Nov 10 15:28:11;matrix;FAM1SAT1");
@@ -32,6 +31,5 @@ public class DataSearcherMain {
                 dtSearch.displayList(lfiles);
             }
         }
-        sc.close();
     }
 }
