@@ -57,6 +57,8 @@ public class UIMain {
                     e.printStackTrace();
                 }
                 System.out.println("Good Bye !");
+                System.out.println("");
+                System.out.println("Here is the list of obtained datas during the session :\n");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
                 System.out.println("\nHere are a few command examples :");

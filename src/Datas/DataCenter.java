@@ -135,6 +135,10 @@ public class DataCenter {
                                    // rest of the commands in the control center
             }
 
+            Thread.sleep(20); // I put a delay in execution here in order to be sure that the file had enough
+                              // time to be well created
+            // In fact, I had issues without this delay
+
             FileReader in = new FileReader(satDir + "DOWNLINK");
             BufferedReader bin = new BufferedReader(in);
             String status = bin.readLine();
@@ -144,7 +148,7 @@ public class DataCenter {
             System.out.println(status);
 
             // We now take care of the data (if there is one)
-            Thread.sleep(100);
+
             if (typeInstruction.equals("DATA") && status.equals("OK")) {
                 Thread.sleep(100);
                 Object obtainedData;
