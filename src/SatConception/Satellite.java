@@ -53,7 +53,7 @@ public abstract class Satellite {
      * @param instruction the instruction : "OFF", "ON" or "DATA" for the moment
      * @return true if the the opeartion is successful, else false
      */
-    public boolean operation(String compName, String instruction) {
+    protected boolean operation(String compName, String instruction) {
         Comps compSat = this.getCompByName(compName);
         if (compSat == null) {
             // the component doesn't exist
@@ -78,7 +78,7 @@ public abstract class Satellite {
      * @param compName the name of the component
      * @return a corresponding data
      */
-    public Data getData(String compName) {
+    protected Data getData(String compName) {
         Comps compSat = this.getCompByName(compName);
         if (compSat == null) {
             // the component doesn't exist

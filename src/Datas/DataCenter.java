@@ -176,21 +176,6 @@ public class DataCenter {
      */
     public void endProgram() throws Exception {
 
-        // for (Satellite sat : this.listSats) {
-
-        // File referenceFile = new File("src/CHANNELS/" + sat.getName());
-        // String[] listFile = referenceFile.list();
-
-        // for (String filename : listFile) {
-        // System.out.println(filename);
-        // File delFile = new File("src/CHANNELS/" + sat.getName() + "/" + filename);
-        // if (delFile.exists()) {
-        // delFile.delete();
-        // }
-        // }
-
-        // }
-
         File referenceFile = new File("src/CHANNELS/");
         String[] listFile = referenceFile.list();
 

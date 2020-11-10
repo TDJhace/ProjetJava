@@ -1,13 +1,13 @@
-package SatConception.Executables;
+package SatConception;
 
 import java.io.*;
 
-import SatConception.Family.Fam1;
+import SatConception.Family.Fam2;
 
-public class Fam1Sat1Main {
+public class Fam2SatMain {
 
     public static void main(String[] args) throws IOException {
-        Fam1 sat = new Fam1("SAT1"); // the only thing that differs in the different satellites executables classes
+        Fam2 sat = new Fam2("SAT"); // the only thing that differs in the different satellites executables classes
 
         String satName = sat.getName();
 
