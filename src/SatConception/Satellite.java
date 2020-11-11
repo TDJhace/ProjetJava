@@ -28,6 +28,10 @@ public abstract class Satellite {
         return this.name;
     }
 
+    public ArrayList<Comps> getSubsystems() {
+        return this.Subsystems;
+    }
+
     /**
      * This method returns a component of the satellite, given its name
      * 

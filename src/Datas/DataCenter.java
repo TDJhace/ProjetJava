@@ -59,6 +59,10 @@ public class DataCenter {
         return this.listDatas;
     }
 
+    public ArrayList<Satellite> getSats() {
+        return this.listSats;
+    }
+
     @Override
     public String toString() {
         return "Satellites : " + listSats.toString() + "\nDatas : " + listDatas.toString();
