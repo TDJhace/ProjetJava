@@ -94,25 +94,26 @@ public class DataCenter {
      * @param typeInstruction a String containing the instruction : basically, "ON",
      *                        "OFF" or "DATA"
      */
-    public void teleOperation(String satName, String compName, String typeInstruction) {
+    public String teleOperation(String satName, String compName, String typeInstruction) {
 
         Satellite aimedSat = this.getSatByName(satName);
 
         if (aimedSat == null) {
             // The satellite doesn't exist in the database
-            System.out.println("Sorry, this satellite is not registered in the database.");
+            return "Sorry, this satellite is not registered in the database.";
         } else {
             // The satellite exists in the database
             if (aimedSat.operation(compName, typeInstruction)) {
-                System.out.println("OK");
 
                 // If the satellite is OK, and that we want a measure, we can do it
                 if (typeInstruction.equals("DATA")) {
                     this.addData(aimedSat.getData(compName));
                 }
 
+                return "OK";
+
             } else {
-                System.out.println("KO");
+                return "KO";
             }
 
         }

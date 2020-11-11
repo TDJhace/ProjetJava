@@ -53,7 +53,7 @@ public class UIMain {
                 s.close();
 
                 // We can begin the process
-                allDatas.teleOperation(satName, compName, typeInstruction);
+                System.out.println(allDatas.teleOperation(satName, compName, typeInstruction));
             }
         }
         sc.close();
