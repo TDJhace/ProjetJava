@@ -15,23 +15,19 @@ public class UIMain {
 
         DataCenter allDatas = new DataCenter();
 
-        // We delete all the existing files in the directories
         try {
+            // We delete all the existing files in the directories
             allDatas.endProgram();
-        } catch (Exception e) {
-            System.out.println("An error occured.");
-            e.printStackTrace();
-        }
 
-        // Now we can begin to create satellites by adding them to allDatas
-        // Moreover, it creates the satellite CHANNELS directories if they don't exist
-        // yet
-        try {
+            // Now we can begin to create satellites by adding them to allDatas
+            // Moreover, it creates the satellite CHANNELS directories if they don't exist
+            // yet
             allDatas.addSat(new Fam1("SAT1"));
             allDatas.addSat(new Fam1("SAT2"));
             allDatas.addSat(new Fam2("SAT"));
         } catch (Exception e) {
-            System.out.println("Fatal Error. The program exits automatically.");
+            System.out.println(
+                    "An error occured with the files. Please delete all the files in the CHANNELS directory. The program exits automatically.");
             System.exit(0);
         }
 

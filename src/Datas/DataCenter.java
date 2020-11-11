@@ -135,8 +135,8 @@ public class DataCenter {
                                    // rest of the commands in the control center
             }
 
-            Thread.sleep(50); // I put a delay in execution here in order to be sure that the file had enough
-                              // time to be well created
+            Thread.sleep(100); // I put a delay in execution here in order to be sure that the file had enough
+                               // time to be well created
             // In fact, I had issues without this delay
 
             FileReader in = new FileReader(satDir + "DOWNLINK");
@@ -156,12 +156,15 @@ public class DataCenter {
                             new BufferedInputStream(new FileInputStream(satDir + "DATALINK")));
                     obtainedData = inData.readObject();
                     inData.close();
+
+                    // just creating an instance of File to delete the DATALINK file
                     File datalink = new File(satDir + "DATALINK");
                     datalink.delete();
                     this.addData(obtainedData.toString());
                 }
             } catch (NullPointerException e) {
-                System.out.println("Small System Error. The datas weren't comprised. The execution isn't stopped.");
+                System.out.println("Small System Error. The datas weren't comprised. The execution is stopped.");
+                System.exit(0);
             }
 
         }
