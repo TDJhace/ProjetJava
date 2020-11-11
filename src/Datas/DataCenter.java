@@ -55,6 +55,7 @@ public class DataCenter {
             }
             this.listSats.add(sat);
 
+            // We also create the CHANNELS directory corresponding to the created satellite
             String satDir = "src/CHANNELS/" + sat.getName() + "/";
             File file = new File(satDir);
             if (!file.exists() && !file.mkdir()) {
@@ -107,9 +108,12 @@ public class DataCenter {
     public void teleOperation(String satName, String compName, String typeInstruction)
             throws IOException, InterruptedException, ClassNotFoundException {
 
-        // We use tha data center as a copy of the statement of the gloabl system
+        // We use tha data center as a copy of the statement of the global system
         // For example, below, we use the infos in the datacenter to be sure that a
         // correct satname was given
+
+        // Moreover, the obtained datas are still stored in the instance of DataCenter
+        // calling this method
 
         Satellite aimedSat = this.getSatByName(satName);
 
@@ -147,7 +151,7 @@ public class DataCenter {
 
             System.out.println(status);
 
-            // We now take care of the data (if there is one)
+            // We now take care of the data (if there is one to get)
             try {
                 if (typeInstruction.equals("DATA") && status.equals("OK")) {
                     Thread.sleep(100);
@@ -160,10 +164,13 @@ public class DataCenter {
                     // just creating an instance of File to delete the DATALINK file
                     File datalink = new File(satDir + "DATALINK");
                     datalink.delete();
+
+                    // adding the data
                     this.addData(obtainedData.toString());
                 }
             } catch (NullPointerException e) {
-                System.out.println("Small System Error. The datas weren't comprised. The execution is stopped.");
+                System.out.println(
+                        "Small System Error. The datas weren't comprised. The execution is nonetheless stopped.");
                 System.exit(0);
             }
 
