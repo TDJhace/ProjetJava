@@ -19,12 +19,13 @@ public class window extends JFrame {
         this.setSize(300, 300);
         this.setLocationRelativeTo(null);
         JPanel contentPane = (JPanel) this.getContentPane();
-        Buttons buttons = new Buttons(allDatas);
+        History history = new History();
+        Buttons buttons = new Buttons(allDatas, history);
         contentPane.add(buttons.getButtonSat(), BorderLayout.NORTH);
         // JPanel panel = new JPanel();
         // panel.add(new JLabel("T/C History"), BorderLayout.NORTH);
         // panel.add(scroll());
-        contentPane.add(scroll(), BorderLayout.CENTER);
+        contentPane.add(new JScrollPane(history), BorderLayout.CENTER);
     }
 
     // public JTabbedPane creates(ArrayList<Satellite> sats) {
