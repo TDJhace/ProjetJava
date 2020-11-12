@@ -1,12 +1,12 @@
 package ControlCenter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import Datas.DataCenter;
+import Datas.*;
 import SatConception.Family.*;
 
-//Hi I commited something !
 
 public class UIMain {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -14,14 +14,15 @@ public class UIMain {
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
         DataCenter allDatas = new DataCenter();
+        DataSaver saver = new DataSaver();
 
         // Now we can begin to create satellites by adding them to allDatas
         allDatas.addSat(new Fam1("SAT1"));
-        allDatas.CreateSeq("FAM1SAT1");
+        saver.CreateSeq("FAM1SAT1");
         allDatas.addSat(new Fam1("SAT2"));
-        allDatas.CreateSeq("FAM1SAT2");
+        saver.CreateSeq("FAM1SAT2");
         allDatas.addSat(new Fam2("SAT"));
-        allDatas.CreateSeq("FAM2SAT");
+        saver.CreateSeq("FAM2SAT");
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -41,7 +42,7 @@ public class UIMain {
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
-                System.out.println(allDatas.getSeq("FAM1SAT1"));
+                System.out.println(saver.getSeq("FAM1SAT1"));
                 System.out.println("Good Bye !");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
@@ -63,11 +64,13 @@ public class UIMain {
                 s.close();
 
                 // We can begin the process
-                int seq = allDatas.getSeq(satName);
-                allDatas.teleOperation(satName, compName, typeInstruction, seq);
+                int seq = saver.getSeq(satName);
+                allDatas.teleOperation(satName, compName, typeInstruction);
                 
                 if(data_size < allDatas.getDatas().size()){
-                    allDatas.updateSeq(satName);    
+                    ArrayList<Data> ldata = allDatas.getDatas();
+                    saver.saveData(satName, seq, ldata.get(ldata.size()-1));
+                    saver.updateSeq(satName);    
                 }
             }
         }

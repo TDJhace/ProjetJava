@@ -1,7 +1,6 @@
 package Datas;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.io.*;
 
 import SatConception.Satellite;
@@ -93,7 +92,7 @@ public class DataCenter {
      *                        "OFF" or "DATA"
      * @throws IOException
      */
-    public void teleOperation(String satName, String compName, String typeInstruction, int seq) throws IOException {
+    public void teleOperation(String satName, String compName, String typeInstruction){
 
         Satellite aimedSat = this.getSatByName(satName);
 
@@ -109,7 +108,6 @@ public class DataCenter {
                 if (typeInstruction.equals("DATA")) {
 
                     this.addData(aimedSat.getData(compName));
-                    this.saveData(satName, seq,aimedSat.getData(compName));
                 }
 
             } else {
@@ -120,60 +118,6 @@ public class DataCenter {
 
     }
 
-    public void saveData(String nameSat,int seq, Data dat) throws IOException{
-        
-        String path = "ProjetJava/DataFiles/DATA"+nameSat+"000000"+seq+".bin";
-        //System.out.println(path);
-        FileOutputStream fl = new FileOutputStream(path);
-        ObjectOutputStream oos = new ObjectOutputStream(fl);
-        oos.writeObject(dat);
-        oos.close();
-
-    }
-
-    public void CreateSeq(String nameSat) throws IOException{
-        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
-        File dir = new File("ProjetJava/SatSequence");
-        File[] directoryListing = dir.listFiles();
-        int flag = 0;
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                path = path.replaceAll("/", Matcher.quoteReplacement(File.separator));
-                //System.out.println(path);
-                //System.out.println(child.toString());
-                String st = child.toString();
-                flag = path.compareTo(st);
-                if(flag == 0){
-                    break;
-                }
-            }
-            //System.out.println(flag);
-            if(flag != 0 || directoryListing.length == 0){
-                //System.out.println("A new file is created");
-                FileOutputStream fl = new FileOutputStream(path);
-                ObjectOutputStream oos = new ObjectOutputStream(fl);
-                oos.writeInt(0);
-                oos.close();
-            }
-        }
-    }
-
-    public void updateSeq(String nameSat)throws IOException, ClassNotFoundException {
-        int seq = this.getSeq(nameSat);
-        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
-        FileOutputStream fl = new FileOutputStream(path, false);
-        ObjectOutputStream oos = new ObjectOutputStream(fl);
-        seq ++;
-        oos.writeInt(seq);
-        oos.close();
-    }
-
-    public int getSeq(String nameSat)  throws IOException, ClassNotFoundException {
-        String path = "ProjetJava/SatSequence/DATA"+nameSat+"NEXTSEQ.bin";
-        FileInputStream fis = new FileInputStream(path);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        int seq = ois.readInt();
-        ois.close();
-        return seq;
-    }
 }
+
+   

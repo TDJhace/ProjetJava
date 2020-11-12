@@ -13,7 +13,7 @@ public class DataSearcherMain {
         System.out.println("Welcome to our data search software !");
         System.out.println("You can search any data made by a satellite, according to the following criteria");
         System.out.println("From date1 to date 2;data type; name of satellite");
-        System.out.println("If you don't want to take one of the criteria on account");
+        System.out.println("If you don't want to take one of the criteria on account, please type NONE");
         System.out.println("If you want to see an example of command please type EXAMPLE");
         while(sc.hasNext()){
             String instruction = sc.nextLine();
@@ -28,7 +28,14 @@ public class DataSearcherMain {
             else{
                 System.out.println(instruction);
                 lfiles = dtSearch.SearchData(instruction);
-                dtSearch.displayList(lfiles);
+                int sz = lfiles.size();
+                if (Integer.compare(sz, 10) == -1 || Integer.compare(sz, 10) == 0){
+                    dtSearch.displayList(lfiles);
+                }
+                else if((sz > 10)){
+                    System.out.println("There are two many files corresponding to the criteria you've selected");
+                    System.out.println("Please be more precise on your criteria");
+                }
             }
         }
     }
