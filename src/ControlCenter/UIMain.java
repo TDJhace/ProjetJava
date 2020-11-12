@@ -98,5 +98,7 @@ public class UIMain {
         // I just print the Datas List at the end of the process in order to verify the
         // good functionning.
         System.out.println(allDatas.getDatas());
+        System.out.println("\nNumber of datas : " + allDatas.getDatas().size());
+        System.out.println("");
     }
 }

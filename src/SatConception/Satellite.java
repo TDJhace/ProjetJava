@@ -36,7 +36,7 @@ public abstract class Satellite {
      *         satellite. If the name isn't associated to any of the components,
      *         this method returns null.
      */
-    protected Comps getCompByName(String compName) {
+    private Comps getCompByName(String compName) {
         for (Comps components : this.Subsystems) {
             if (components.getName().equals(compName)) {
                 return components;
