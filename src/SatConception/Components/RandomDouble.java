@@ -8,9 +8,7 @@ import SatConception.Comps;
  * values.
  */
 public class RandomDouble extends Comps {
-
-  
-      /**
+    /**
      * 
      * @param name the name of the component
      */

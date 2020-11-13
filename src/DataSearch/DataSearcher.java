@@ -3,6 +3,7 @@ package DataSearch;
 import java.util.*;
 import java.io.*;
 import Datas.*;
+import java.text.SimpleDateFormat;
 
 /**
  * This the class of the data searching center.
@@ -181,96 +182,131 @@ public class DataSearcher {
         String satscriteria = Criteria.substring(listidx[1]+1);
 
         /**
-         * From now on we will 3 pairs of if/elseif blocks to consider, for each criteria,
+         * From now on we will 3 pairs of switch/case blocks to consider, for each criteria,
          * whether it's activated or not.
          */
 
+        int cdate = datecriteria.compareTo("NONE");
+        int cdata = datacriteria.compareTo("NONE");
+        int cstat = satscriteria.compareTo("NONE");
+
         /**
-         * Here is the case were the data criteria is activated.
+         * The first switch if for the date criteria.
          */
-        if(datacriteria.equals("NONE") == false){
-            //We use the toLowerCase in oder to avoid errors if the criteria is type with Maj activated.
-            String type = datacriteria.toLowerCase();
-            if(type.equals("matrix")){
-                ldata = this.getHdata().get("matrix");
-            }
-            else if(type.equals("double")){
-                ldata = this.getHdata().get("double");
-            }
-            else{
-                System.out.println("Invalid type of data");
-            }
-        }
 
-        else if(datacriteria.equals("NONE")){
-            for(String key : getHdata().keySet()){
-                ldata.addAll(getHdata().get(key));
-            }
-        }
-
-        if(datecriteria.equals("NONE") == false){
-            int i = datecriteria.indexOf("/");
-            String date1 = datecriteria.substring(0, i)+ " CET 2020";
-            String date2 = datecriteria.substring(i+1)+ " CET 2020";
-            Set<Date> setkeys = this.hdate.keySet();
-            Date[] lk = setkeys.toArray(new Date[setkeys.size()]);
-            sortDatelist(lk);
-            if(CompareStringDate(lk[0].toString(), date2)){
-                System.out.println("The date must be before the first mesure date");
-            }
-            else if(CompareStringDate(date1,lk[lk.length-1].toString())){
-                System.out.println("The date must be before the last mesure date");
+        switch (cdate) {
+            /**
+             * This is the case when the usor don't want to add a date criteria to his
+             * research to we take in account all the mesure of hdate.
+             */
+            case 0:
                 for(Date d : getHdate().keySet()){
-                    ldate.addAll(getHdate().get(d));
+                ldate.addAll(getHdate().get(d));
                 }
-            }
-            else{
-                boolean flag1 = false;
-                boolean flag2 = false;
-                for(Date s : lk){
-                    if(flag1 == false){
-                        flag1 = CompareStringDate(s.toString(),(date1));
-                    }
-                    if(flag2 == false){
-                        flag2 = CompareStringDate(s.toString(),(date2));
-                    }
+            break;
 
-                    if(flag1 == true && flag2 == false){
+            /**
+             * This is the case where the usor wants to add a date criteria on his research.
+             * Then we will have to check all the values of hdate corresponding to the interval
+             * [date1, date2] (it's asked to the usor to put a date1 that is before the date2).
+             */
+        
+            default:
+                int i = datecriteria.indexOf("/");
+                //If the usor has not typed 2 dates separated by "/", then we break the case, 
+                // Ask the usor to type the dates on the correect format.
+                if(i == -1){
+                    System.out.println("Please type two dates that are separated by the / character");
+                    break;
+                }
+                String sdate1 = datecriteria.substring(0, i);
+                String sdate2 = datecriteria.substring(i+1);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date1 = sdf.parse(sdate1);
+                Date date2 = sdf.parse(sdate2);
+                Set<Date> setkeys = getHdate().keySet();
+                Date[] lk = setkeys.toArray(new Date[setkeys.size()]);
+                sort(lk, 0, lk.length - 1);;
+                //We check if the date2 is after the first mesure date.
+                // If not, then it has no sense to look ad the mesures taken on the interval [date1,date2].
+                if(CompareDate(lk[0], date2) ==1){
+                    System.out.println("The date2 must be after the first mesure date");
+                    break;
+                }
+                //Another test, we check if the date1 is before the last mesure date.
+                //If not, then it has no sense to look ad the mesures taken on the interval [date1,date2].
+                else if(CompareDate(date1,lk[lk.length-1]) == 1){
+                    System.out.println("The date1 must be before the last mesure date");
+                    break;
+                }
+                int flag1 = -1;                    
+                int flag2 = -1;
+                for(Date s : lk){
+                    if(flag1 == -1){
+                        flag1 = CompareDate(s,date1);
+                    }
+                    if(flag2 == -1){
+                        flag2 = CompareDate(s,(date2));
+                    }
+                    if(flag1 == 1 && flag2 == -1){
                         ldate.addAll(hdate.get(s));
                     }
-                    if(flag1 == true && flag2 == true){
-                        break;                    }  
-                }
-            }         
+                    if(flag1 == 1 && flag2 == 1){
+                        break;                    
+                    }  
+                }    
+            break;
         }
+        /**
+         * The second switch is for the data type criteria.
+         */
 
-        else if(datecriteria.equals("NONE")){
-            for(Date d : getHdate().keySet()){
-                ldate.addAll(getHdate().get(d));
-            }
+        switch (cdata) {
+            case 0:
+                for(String key : getHdata().keySet()){
+                    ldata.addAll(getHdata().get(key));
+                }
+                
+                break;
+        
+            default:
+                String type = datacriteria.toLowerCase();
+                if(type.equals("image")){
+                    ldata = getHdata().get("image");
+                }
+                else if(type.equals("double")){
+                    ldata = getHdata().get("double");
+                }
+                else if(type.equals("localisation")){
+                    ldata = getHdata().get("localisation");
+                }
+                else{
+                    System.out.println("Invalid type of data");
+                }
+                break;
         }
         
-        if(satscriteria.equals("NONE") == false){
-            
-            String[] sats = satscriteria.split("/");
-            for(String nsat : sats){
-                if(getHsat().containsKey(nsat)){
-                    lsat.addAll(getHsat().get(nsat));
-                }
-            }
-            if(lsat.size() == 0){
-                System.out.println("Invalid name of Sat");
-            } 
-        }
-
-        else if(satscriteria.equals("NONE")){
-            System.out.println(satscriteria);
-            for(String key : getHsat().keySet()){
+        switch (cstat) {
+            case 0:
+                for(String key : getHsat().keySet()){
                 lsat.addAll(getHsat().get(key));
-            }
+                }
+                break;
+        
+            default:
+                String[] sats = satscriteria.split("/");
+                for(String nsat : sats){
+                    if(getHsat().containsKey(nsat)){
+                        lsat.addAll(getHsat().get(nsat));
+                    }
+                }
+                if(lsat.size() == 0){
+                    System.out.println("Invalid name of Sat");
+                } 
+                break;
         }
-
-        System.out.printf("There are %d files according to the statellite critria \n", lsat.size());
+        
+        System.out.printf("There are %d files according to the statellite criteria \n", lsat.size());
         System.out.printf("There are %d files according to the data criteria \n", ldata.size());
         System.out.printf("There are %d files according to the date criteria \n",ldate.size());
         
@@ -297,68 +333,6 @@ public class DataSearcher {
         }
     }
 
-    public static boolean CompareStringDate(String s1, String s2){
-        boolean flag = false;
-        String[] ls1 = s1.split(" ");
-        String[] ls2 = s2.split(" ");
-        int m1 = DataSearcher.getMonth(ls1[1]);
-        int m2 = DataSearcher.getMonth(ls2[1]);
-        String[] time1 = ls1[3].split(":");
-        String[] time2 = ls2[3].split(":");
-        if(m1 > m2){
-            return true;
-        }
-        else if(m1 < m2){
-            return false;
-        }
-        else{
-            int day1 = Integer.parseInt(ls1[2]);
-            int day2 = Integer.parseInt(ls2[2]);
-            if(day1 > day2){
-                return true;
-            }
-            else if(day1 < day2){
-                return false;
-            }
-            else{
-                int h1 = Integer.parseInt(time1[0]);
-                int h2 = Integer.parseInt(time2[0]);
-                if(h1 > h2){
-                    return true;
-                }
-                else if(h1 < h2){
-                    return false;
-                }
-                else{
-                    int min1 = Integer.parseInt(time1[1]);
-                    int min2 = Integer.parseInt(time2[1]);
-                    if(min1 > min2){
-                        return true;
-                    }
-                    else if(min1 < min2){
-                        return false;
-                        }
-                    else{
-                        int sec1 = Integer.parseInt(time1[2]);
-                        int sec2 = Integer.parseInt(time2[2]);
-                        if(sec1 > sec2){
-                            return true;
-                        }
-                        else if(sec1 < sec2){
-                            return false;
-                        }
-                        else{
-                            System.out.println("They are the same date");
-                        }
-
-                    }
-                }
-            }      
-        }
-
-    return flag;
-    }
-
     public boolean isDateIn(String s, Set<Date> st){
         boolean flag = false;
         int i;
@@ -371,18 +345,69 @@ public class DataSearcher {
         }
         return flag;
     }
-    
-    public void sortDatelist(Date[] ld){
-        for (int j = 1; j < ld.length; j++) {
-            Date current = ld[j];
-            int i = j-1;
-            while ((i > -1) && (CompareDate(ld[i],current) == 1)) {
-                ld[i+1] = ld[i];
-                i--;
-            }
-            ld[i+1] = current;
-        }
 
+    public void merge(Date[] arr, int l, int m, int r){
+        
+        // Find sizes of two subarrays to be merged
+        int n1 = m - l + 1;
+        int n2 = r - m;
+ 
+        /* Create temp arrays */
+        Date L[] = new Date[n1];
+        Date R[] = new Date[n2];
+ 
+        /*Copy data to temp arrays*/
+        for (int i = 0; i < n1; ++i)
+            L[i] = arr[l + i];
+        for (int j = 0; j < n2; ++j)
+            R[j] = arr[m + 1 + j];
+ 
+        /* Merge the temp arrays */
+ 
+        // Initial indexes of first and second subarrays
+        int i = 0, j = 0;
+ 
+        // Initial index of merged subarry array
+        int k = l;
+        while (i < n1 && j < n2) {
+            if (CompareDate(L[i],R[j]) ==-1) {
+                arr[k] = L[i];
+                i++;
+            }
+            else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+ 
+        /* Copy remaining elements of L[] if any */
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+ 
+        /* Copy remaining elements of R[] if any */
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+    void sort(Date[] arr, int l, int r)
+    {
+        if (l < r) {
+            // Find the middle point
+            int m = (l + r) / 2;
+ 
+            // Sort first and second halves
+            sort(arr, l, m);
+            sort(arr, m + 1, r);
+ 
+            // Merge the sorted halves
+            merge(arr, l, m, r);
+        }
     }
 
     public void displayList(ArrayList<String> l){
@@ -390,47 +415,7 @@ public class DataSearcher {
             System.out.println(s);
         }
     }
-
-    public static int getMonth(String s){
-        if(s.equals("Jan")){
-            return 1;
-        }
-        else if(s.equals("Feb")){
-            return 2;
-        }
-        else if(s.equals("Mar")){
-            return 3;
-        }
-        else if(s.equals("Apr")){
-            return 4;
-        }
-        else if(s.equals("May")){
-            return 5;
-        }
-        else if(s.equals("Jun")){
-            return 6;
-        }
-        else if(s.equals("Aug")){
-            return 8;
-        }
-        else if(s.equals("Sep")){
-            return 9;
-        }
-        else if(s.equals("Oct")){
-            return 10;
-        }
-        else if(s.equals("Nov")){
-            return 11;
-        }
-        else if(s.equals("Dec")){
-            return 12;
-        }
-        else{
-            System.out.println("Please put a valid format for your month");
-            return 0;
-        }
-    }
-
+    
     @Override
     public String toString() {
         return "{" +

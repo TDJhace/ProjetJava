@@ -47,6 +47,9 @@ public class Data implements Serializable{
         if(this.value instanceof int[][]){
             return (Arrays.deepToString((Object[]) this.value));
         }
+        else if(value instanceof double[]){
+            return (Arrays.toString((double[]) (this.value)));
+        }
         else{
             return this.value.toString();
         }
@@ -54,10 +57,13 @@ public class Data implements Serializable{
     
     public String valType(){
         if(this.value instanceof int[][]){
-            return("matrix");
+            return("image");
         }
-        if(this.value instanceof Double){
+        else if(this.value instanceof Double){
             return("double");
+        }
+        else if(this.value instanceof double[]){
+            return("localisation");
         }
         else{
             return("invalid type");

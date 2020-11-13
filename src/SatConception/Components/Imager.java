@@ -43,7 +43,6 @@ public class Imager extends Comps {
     protected int getRandomInt(int min, int max) {
 
         if (min >= max) {
-            /** Added just after the M6 about the exceptions ;). */
             throw new IllegalArgumentException("max has to be greater than min");
         }
     
