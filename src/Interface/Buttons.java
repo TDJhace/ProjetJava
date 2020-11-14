@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -62,10 +63,10 @@ public class Buttons {
                     try {
                         Listener2(e, allDatas, sat, sub, history, button, dSave);
                     } catch (ClassNotFoundException e1) {
-                        
+
                         e1.printStackTrace();
                     } catch (IOException e1) {
-                    
+
                         e1.printStackTrace();
                     }
                 }
@@ -75,26 +76,45 @@ public class Buttons {
     }
 
     // add a coloredline on history when a button is used
-    public void Listener(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history, String s,
-            JLabel button){
-        String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
-        if (result.equals("OK")) {
-            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
-            button.setForeground(Color.GREEN);
-        } else {
-            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.RED);
-            button.setForeground(Color.RED);
+    public void Listener(ActionEvent f, DataCenter allDatas, Satellite sat, Comps sub, History history, String s,
+            JLabel button) {
+
+        try {
+
+            String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
+            if (result.equals("OK")) {
+                history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
+                button.setForeground(Color.GREEN);
+            } else {
+                history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.RED);
+                button.setForeground(Color.RED);
+            }
+
+        } catch (NoSuchElementException e) {
+            System.out.println("Please write a correct command.");
+        } catch (IOException e) {
+            System.out.println("An error occured with the CHANNEL files. The program exits automatically.");
+            e.printStackTrace();
+            System.out.println(e.getLocalizedMessage());
+            System.exit(0);
+        } catch (InterruptedException e) {
+            System.out.println("A fatal error occured. The program exits automatically.");
+            System.exit(0);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Unknown error.");
         }
+
     }
-    public void Listener2(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history,
-            JLabel button, DataSaver dSave) throws ClassNotFoundException, IOException {
+
+    public void Listener2(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history, JLabel button,
+            DataSaver dSave) throws ClassNotFoundException, IOException {
         String s = "DATA";
         String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
         if (result.equals("OK")) {
-            
+
             int seq = dSave.getSeq(sat.getName());
-            ArrayList<Data> ldata = allDatas.getDatas();
-            dSave.saveData(sat.getName(), seq, ldata.get(ldata.size()-1));
+            ArrayList<String> ldata = allDatas.getDatas();
+            dSave.saveData(sat.getName(), seq, ldata.get(ldata.size() - 1));
             dSave.updateSeq(sat.getName());
             history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
             button.setForeground(Color.GREEN);

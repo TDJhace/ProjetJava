@@ -5,8 +5,6 @@ import java.io.*;
 
 import SatConception.Satellite;
 
-import java.io.*;
-
 /**
  * The DataCenter class is the major class : it contains and refers all the
  * satellites and the datas associated.
@@ -110,7 +108,7 @@ public class DataCenter {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public String teleOperation(String satName, String compName, String typeInstruction) {
+    public String teleOperation(String satName, String compName, String typeInstruction)
             throws IOException, InterruptedException, ClassNotFoundException {
 
         // We use tha data center as a copy of the statement of the global system
@@ -153,8 +151,6 @@ public class DataCenter {
             String status = bin.readLine();
             bin.close();
             downlinkFile.delete();
-
-            
 
             // We now take care of the data (if there is one to get)
             try {
@@ -206,5 +202,3 @@ public class DataCenter {
     }
 
 }
-
-   
