@@ -1,6 +1,7 @@
 package ControlCenter;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,19 +15,31 @@ public class UIMain {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
+
         DataCenter allDatas = new DataCenter();
         DataSaver saver = new DataSaver();
 
-        // Now we can begin to create satellites by adding them to allDatas
-        allDatas.addSat(new Fam1("SAT1"));
+        try {
+            // We delete all the existing files in the directories
+            allDatas.endProgram();
         saver.CreateSeq("FAM1SAT1");
-        allDatas.addSat(new Fam1("SAT2"));
         saver.CreateSeq("FAM1SAT2");
-        allDatas.addSat(new Fam2("SAT"));
         saver.CreateSeq("FAM2SAT");
 
         window w = new window(allDatas, saver);
         w.setVisible(true);
+
+            // Now we can begin to create satellites by adding them to allDatas
+            // Moreover, it creates the satellite CHANNELS directories if they don't exist
+            // yet
+            allDatas.addSat(new Fam1("SAT1"));
+            allDatas.addSat(new Fam1("SAT2"));
+            allDatas.addSat(new Fam2("SAT"));
+        } catch (Exception e) {
+            System.out.println(
+                    "An error occured with the files. Please delete all the files in the CHANNELS directory. The program exits automatically.");
+            System.exit(0);
+        }
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -46,13 +59,20 @@ public class UIMain {
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
-                System.out.println(saver.getSeq("FAM1SAT1"));
+                try {
+                    allDatas.endProgram();
+                } catch (Exception e) {
+                    System.out.println("An error occured.");
+                    e.printStackTrace();
+                }
                 System.out.println("Good Bye !");
+                System.out.println("");
+                System.out.println("Here is the list of obtained datas during the session :\n");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
                 System.out.println("\nHere are a few command examples :");
                 System.out.println("FAM1SAT1:IMAGER1:ON");
-                System.out.println("FAM2SAT:RANDOMDOUBLE:DATA");
+                System.out.println("FAM2SAT:RANDOM1:DATA");
                 System.out.println("FAM1SAT2:IMAGER2:OFF\n");
                 System.out.println("Enter a command below.");
             } else {
@@ -61,24 +81,30 @@ public class UIMain {
                 Scanner s = new Scanner(instruction).useDelimiter(":");
 
                 // We obtains the values of the command
-                satName = s.next();
-                compName = s.next();
-                typeInstruction = s.next();
+                try {
+                    satName = s.next();
+                    compName = s.next();
+                    typeInstruction = s.next();
+
+                    // We can begin the process
+                    System.out.println(allDatas.teleOperation(satName, compName, typeInstruction));
+                } catch (NoSuchElementException e) {
+                    System.out.println("Please write a correct command.");
+                } catch (IOException e) {
+                    System.out.println("An error occured with the CHANNEL files. The program exits automatically.");
+                    e.printStackTrace();
+                    System.out.println(e.getLocalizedMessage());
+                    System.exit(0);
+                } catch (InterruptedException e) {
+                    System.out.println("A fatal error occured. The program exits automatically.");
+                    System.exit(0);
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Unknown error.");
+                }
 
                 s.close();
 
-                // We can begin the process
                 int seq = saver.getSeq(satName);
-                System.out.println(allDatas.teleOperation(satName, compName, typeInstruction));
-                
-                //If a data mesure is done correctly, then we update the sequence of the satellite that
-                // has done the mesure.
-                // And we save the mesure on a specif file, thanks to the dataSaver methods.
-                if(data_size < allDatas.getDatas().size()){
-                    ArrayList<Data> ldata = allDatas.getDatas();
-                    saver.saveData(satName, seq, ldata.get(ldata.size()-1));
-                    saver.updateSeq(satName);    
-                }
             }
         }
         sc.close();
@@ -86,5 +112,7 @@ public class UIMain {
         // I just print the Datas List at the end of the process in order to verify the
         // good functionning.
         System.out.println(allDatas.getDatas());
+        System.out.println("\nNumber of datas : " + allDatas.getDatas().size());
+        System.out.println("");
     }
 }
