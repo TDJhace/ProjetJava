@@ -30,7 +30,7 @@ public class DataSearcherMain {
                 System.out.println("There are 3 available satellites : FAM1SAT1, FAM1SAT2 and FAM2SAT2");
             }
             else if(instruction.equals("EXAMPLE")){
-                System.out.println("2020-11-12 21:00:00/2020-11-12 21:00:10;matrix;FAM1SAT1");
+                System.out.println("2020-11-12 21:00:00/2020-11-12 21:00:10;image;FAM1SAT1");
             }
             else{
                 System.out.println(instruction);
@@ -38,8 +38,8 @@ public class DataSearcherMain {
                 int sz = lfiles.size();
                 
                 // If the list of files is lower than 10, we print it on the terminal.
-                if (Integer.compare(sz, 10) == -1 || Integer.compare(sz, 10) == 0){
-                    System.out.println("Here are the files corresponding to your criteria");
+                if (sz <= 10 ){
+                    System.out.printf("There are %d files according to the date criteria \n",lfiles.size());
                     dtSearch.displayList(lfiles);
                 }
                 
