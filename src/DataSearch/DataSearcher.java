@@ -46,7 +46,7 @@ public class DataSearcher {
         this.hsat = new HashMap<String,  ArrayList<String>>();
         this.hdata = new HashMap<String,  ArrayList<String>>();
         
-        File dir = new File("ProjetJava/DataFiles");
+        File dir = new File("DataFiles/");
         File[] directoryListing = dir.listFiles();
         if(directoryListing.length == 0){
             throw new Exception("There must be at least one data file saved");
@@ -248,7 +248,6 @@ public class DataSearcher {
                 int flag1 = -1;                    
                 int flag2 = -1;
                 for(Date s : lk){
-                    System.out.println(s.toString());
                     if(flag1 == -1){
                         flag1 = CompareDate(s,date1);
                     }
