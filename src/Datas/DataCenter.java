@@ -175,7 +175,7 @@ public class DataCenter {
             String NouvelleProcedure = "";
             NouvelleProcedure += procedure.split("/")[0];
             for(int i = 1; i < procedure.split("/").length;i++){
-                NouvelleProcedure += ":" + procedure.split("/")[i];
+                NouvelleProcedure += "-" + procedure.split("/")[i];
             }
             return NouvelleProcedure;
         }
