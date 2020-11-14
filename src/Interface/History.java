@@ -9,16 +9,13 @@ import javax.swing.text.StyledDocument;
 import java.awt.Color;
 
 public class History extends JTextPane {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     public History() {
         super();
     }
 
+    // add a line written in color in the JTextPane History
     public void addColoredLine(String line, Color color) {
         StyledDocument doc = this.getStyledDocument();
         Style style = this.addStyle("Color Style", null);
