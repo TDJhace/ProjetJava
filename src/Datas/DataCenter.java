@@ -146,13 +146,18 @@ public class DataCenter {
                                    // rest of the commands in the control center
             }
 
-            Thread.sleep(100); // I put a delay in execution here in order to be sure that the file had enough
-                               // time to be well created
-            // In fact, I had issues without this delay
+            // Thread.sleep(100); // I put a delay in execution here in order to be sure
+            // that the file had enough
+            // // time to be well created
+            // // In fact, I had issues without this delay
 
             FileReader in = new FileReader(satDir + "DOWNLINK");
             BufferedReader bin = new BufferedReader(in);
-            String status = bin.readLine();
+            String status;
+            do {
+                status = bin.readLine();
+            } while (status == null);
+
             bin.close();
             downlinkFile.delete();
 
