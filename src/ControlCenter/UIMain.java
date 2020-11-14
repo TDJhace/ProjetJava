@@ -2,6 +2,7 @@ package ControlCenter;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import Datas.*;
@@ -23,13 +24,13 @@ public class UIMain {
             saver.CreateSeq("FAM1SAT1");
             saver.CreateSeq("FAM1SAT2");
             saver.CreateSeq("FAM2SAT");
+        allDatas.addSat(new Fam2("SAT","XSATS"));
+        allDatas.addSat(new Fam1("SAT1","ISAESATS"));
+        allDatas.addSat(new Fam1("SAT2","ISAESATS"));
 
             // Now we can begin to create satellites by adding them to allDatas
             // Moreover, it creates the satellite CHANNELS directories if they don't exist
             // yet
-            allDatas.addSat(new Fam1("SAT1"));
-            allDatas.addSat(new Fam1("SAT2"));
-            allDatas.addSat(new Fam2("SAT"));
 
             window w = new window(allDatas, saver);
             w.setVisible(true);
@@ -39,6 +40,15 @@ public class UIMain {
 
             System.exit(0);
         }
+
+        // Creons les Procedures de l'enonce (les fichiers texte sont deja pre-ecris et stockes dans le dossier procedure, on ajoute juste le nom de ces procedure a la liste du dataCenter)
+
+        allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGESCRIPT");
+        allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGERSEQUENCE");
+        allDatas.addProcedure("REDUNDANT");
+        allDatas.addProcedure("IMAGESEQMAIN");
+        allDatas.addProcedure("IMAGESEQBACKUP");
+        allDatas.addProcedure("REPEAT_IMAGER1DATA_UNTIL_SUCCESS");
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -74,6 +84,8 @@ public class UIMain {
                 System.out.println("FAM2SAT:RANDOM1:DATA");
                 System.out.println("FAM1SAT2:IMAGER2:OFF\n");
                 System.out.println("Enter a command below.");
+            } else if(allDatas.VerifInstructionProcedure(instruction)){                         //On verifie si la commande concerne une Procedure existante est compatbible avec le satellite
+                allDatas.teleProcedure(instruction.split(":")[1], instruction.split(":")[0]);   //On lance la TeleOperation de la procedure
             } else {
                 instruction += ": ";
 
