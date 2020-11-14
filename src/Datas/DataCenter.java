@@ -175,6 +175,7 @@ public class DataCenter {
             } catch (NullPointerException e) {
                 System.out.println(
                         "Small System Error. The datas weren't comprised. The execution is nonetheless stopped.");
+                e.printStackTrace();
                 System.exit(0);
             }
 
