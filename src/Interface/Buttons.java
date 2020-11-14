@@ -79,49 +79,73 @@ public class Buttons {
     public void Listener(ActionEvent f, DataCenter allDatas, Satellite sat, Comps sub, History history, String s,
             JLabel button) {
 
-        try {
+        // try {
 
-            String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
-            if (result.equals("OK")) {
-                history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
-                button.setForeground(Color.GREEN);
-            } else {
-                history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.RED);
-                button.setForeground(Color.RED);
-            }
+        // String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
+        // if (result.equals("OK")) {
+        // history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n",
+        // Color.GREEN);
+        // button.setForeground(Color.GREEN);
+        // } else {
+        // history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n",
+        // Color.RED);
+        // button.setForeground(Color.RED);
+        // }
 
-        } catch (NoSuchElementException e) {
-            System.out.println("Please write a correct command.");
-        } catch (IOException e) {
-            System.out.println("An error occured with the CHANNEL files. The program exits automatically.");
-            e.printStackTrace();
-            System.out.println(e.getLocalizedMessage());
-            System.exit(0);
-        } catch (InterruptedException e) {
-            System.out.println("A fatal error occured. The program exits automatically.");
-            System.exit(0);
-        } catch (ClassNotFoundException e) {
-            System.err.println("Unknown error.");
-        }
+        // } catch (NoSuchElementException e) {
+        // System.out.println("Please write a correct command.");
+        // } catch (IOException e) {
+        // System.out.println("An error occured with the CHANNEL files. The program
+        // exits automatically.");
+        // e.printStackTrace();
+        // System.out.println(e.getLocalizedMessage());
+        // System.exit(0);
+        // } catch (InterruptedException e) {
+        // System.out.println("A fatal error occured. The program exits
+        // automatically.");
+        // System.exit(0);
+        // } catch (ClassNotFoundException e) {
+        // System.err.println("Unknown error.");
+        // }
 
     }
 
-    public void Listener2(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history, JLabel button,
+    public void Listener2(ActionEvent f, DataCenter allDatas, Satellite sat, Comps sub, History history, JLabel button,
             DataSaver dSave) throws ClassNotFoundException, IOException {
         String s = "DATA";
-        String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
-        if (result.equals("OK")) {
 
-            int seq = dSave.getSeq(sat.getName());
-            ArrayList<String> ldata = allDatas.getDatas();
-            dSave.saveData(sat.getName(), seq, ldata.get(ldata.size() - 1));
-            dSave.updateSeq(sat.getName());
-            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
-            button.setForeground(Color.GREEN);
-        } else {
-            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.RED);
-            button.setForeground(Color.RED);
-        }
+        // try {
+        // String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
+        // if (result.equals("OK")) {
+
+        // int seq = dSave.getSeq(sat.getName());
+        // ArrayList<Data> ldata = allDatas.getDatas();
+        // dSave.saveData(sat.getName(), seq, ldata.get(ldata.size() - 1));
+        // dSave.updateSeq(sat.getName());
+        // history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n",
+        // Color.GREEN);
+        // button.setForeground(Color.GREEN);
+        // } else {
+        // history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n",
+        // Color.RED);
+        // button.setForeground(Color.RED);
+        // }
+
+        // } catch (NoSuchElementException e) {
+        // System.out.println("Please write a correct command.");
+        // } catch (IOException e) {
+        // System.out.println("An error occured with the CHANNEL files. The program
+        // exits automatically.");
+        // e.printStackTrace();
+        // System.out.println(e.getLocalizedMessage());
+        // System.exit(0);
+        // } catch (InterruptedException e) {
+        // System.out.println("A fatal error occured. The program exits
+        // automatically.");
+        // System.exit(0);
+        // } catch (ClassNotFoundException e) {
+        // System.err.println("Unknown error.");
+        // }
     }
 
     public JTabbedPane getButtonSat() {

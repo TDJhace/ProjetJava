@@ -12,7 +12,7 @@ import SatConception.Satellite;
 public class DataCenter {
 
     private ArrayList<Satellite> listSats;
-    private ArrayList<String> listDatas;
+    private ArrayList<Data> listDatas;
 
     /**
      * @param listSats  is an ArrayList of the Satellites in order to store them
@@ -21,7 +21,7 @@ public class DataCenter {
      */
     public DataCenter() {
         this.listSats = new ArrayList<Satellite>();
-        this.listDatas = new ArrayList<String>();
+        this.listDatas = new ArrayList<Data>();
     }
 
     /**
@@ -29,17 +29,16 @@ public class DataCenter {
      * 
      * @param dat the data to be added
      */
-    public void addData(String dat) {
+    public void addData(Data dat) {
         if (dat != null) {
             this.listDatas.add(dat);
         }
 
     }
 
-    public ArrayList<String> getListDatas() {
+    public ArrayList<Data> getListDatas() {
         return this.listDatas;
     }
-
 
     /**
      * Just a simple method to add a satellite to the DataCenter.
@@ -71,7 +70,7 @@ public class DataCenter {
 
     }
 
-    public ArrayList<String> getDatas() {
+    public ArrayList<Data> getDatas() {
         return this.listDatas;
     }
 
@@ -161,10 +160,9 @@ public class DataCenter {
             try {
                 if (typeInstruction.equals("DATA") && status.equals("OK")) {
                     Thread.sleep(100);
-                    Object obtainedData;
-                    ObjectInputStream inData = new ObjectInputStream(
-                            new BufferedInputStream(new FileInputStream(satDir + "DATALINK")));
-                    obtainedData = inData.readObject();
+                    Data obtainedData;
+                    ObjectInputStream inData = new ObjectInputStream(new FileInputStream(satDir + "DATALINK"));
+                    obtainedData = (Data) inData.readObject();
                     inData.close();
 
                     // just creating an instance of File to delete the DATALINK file
@@ -172,7 +170,7 @@ public class DataCenter {
                     datalink.delete();
 
                     // adding the data
-                    this.addData(obtainedData.toString());
+                    this.addData(obtainedData);
                 }
             } catch (NullPointerException e) {
                 System.out.println(

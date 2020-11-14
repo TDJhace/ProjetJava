@@ -45,10 +45,9 @@ public class Fam1Sat2Main {
                         File dataFile = new File("src/CHANNELS/" + satName + "/DATALINK");
                         dataFile.createNewFile();
 
-                        ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(
-                                new FileOutputStream("src/CHANNELS/" + satName + "/DATALINK")));
+                        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dataFile));
 
-                        out.writeObject(sat.getData(commandedComp).toString());
+                        out.writeObject(sat.getData(commandedComp));
                         out.close();
                         System.out.println("Data from " + commandedComp + " correctly sent.");
                     }

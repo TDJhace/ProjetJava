@@ -2,13 +2,11 @@ package ControlCenter;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import Datas.*;
 import Interface.window;
 import SatConception.Family.*;
-
 
 public class UIMain {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -22,12 +20,12 @@ public class UIMain {
         try {
             // We delete all the existing files in the directories
             allDatas.endProgram();
-        saver.CreateSeq("FAM1SAT1");
-        saver.CreateSeq("FAM1SAT2");
-        saver.CreateSeq("FAM2SAT");
+            saver.CreateSeq("FAM1SAT1");
+            saver.CreateSeq("FAM1SAT2");
+            saver.CreateSeq("FAM2SAT");
 
-        window w = new window(allDatas, saver);
-        w.setVisible(true);
+            window w = new window(allDatas, saver);
+            w.setVisible(true);
 
             // Now we can begin to create satellites by adding them to allDatas
             // Moreover, it creates the satellite CHANNELS directories if they don't exist
@@ -53,9 +51,9 @@ public class UIMain {
 
         while (sc.hasNext()) {
 
-            int data_size = allDatas.getDatas().size();
+            // int data_size = allDatas.getDatas().size();
             String instruction = sc.next();
-        
+
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
@@ -104,7 +102,6 @@ public class UIMain {
 
                 s.close();
 
-                int seq = saver.getSeq(satName);
             }
         }
         sc.close();
