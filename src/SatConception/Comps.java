@@ -5,7 +5,8 @@ import Datas.Data;
 /**
  * This abstract class represents the subcomponents of the satellites.
  */
-public abstract class Comps {
+public abstract class Comps{
+
     protected String name;
     protected boolean state;
 

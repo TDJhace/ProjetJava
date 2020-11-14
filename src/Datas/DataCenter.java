@@ -1,6 +1,7 @@
 package Datas;
 
 import java.util.ArrayList;
+import java.io.*;
 
 import SatConception.Satellite;
 
@@ -93,6 +94,7 @@ public class DataCenter {
      *                        satellite
      * @param typeInstruction a String containing the instruction : basically, "ON",
      *                        "OFF" or "DATA"
+     * @throws IOException
      */
     public String teleOperation(String satName, String compName, String typeInstruction) {
 
@@ -107,6 +109,7 @@ public class DataCenter {
 
                 // If the satellite is OK, and that we want a measure, we can do it
                 if (typeInstruction.equals("DATA")) {
+
                     this.addData(aimedSat.getData(compName));
                 }
 
@@ -121,3 +124,5 @@ public class DataCenter {
     }
 
 }
+
+   

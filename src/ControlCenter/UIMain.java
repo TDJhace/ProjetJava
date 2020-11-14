@@ -1,21 +1,28 @@
 package ControlCenter;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import Datas.DataCenter;
+import Datas.*;
 import SatConception.Family.*;
 
+
 public class UIMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
         DataCenter allDatas = new DataCenter();
+        DataSaver saver = new DataSaver();
 
         // Now we can begin to create satellites by adding them to allDatas
         allDatas.addSat(new Fam1("SAT1"));
+        saver.CreateSeq("FAM1SAT1");
         allDatas.addSat(new Fam1("SAT2"));
+        saver.CreateSeq("FAM1SAT2");
         allDatas.addSat(new Fam2("SAT"));
+        saver.CreateSeq("FAM2SAT");
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -28,10 +35,14 @@ public class UIMain {
         System.out.println("For command examples, enter EXAMPLES. Enter EXIT when the work is done.");
 
         while (sc.hasNext()) {
+
+            int data_size = allDatas.getDatas().size();
             String instruction = sc.next();
+        
             if (instruction.equals("EXIT")) {
                 // The EXIT instruction closes the scanner and quit the program
                 sc.close();
+                System.out.println(saver.getSeq("FAM1SAT1"));
                 System.out.println("Good Bye !");
                 break;
             } else if (instruction.equals("EXAMPLES")) {
@@ -53,7 +64,17 @@ public class UIMain {
                 s.close();
 
                 // We can begin the process
+                int seq = saver.getSeq(satName);
                 System.out.println(allDatas.teleOperation(satName, compName, typeInstruction));
+                
+                //If a data mesure is done correctly, then we update the sequence of the satellite that
+                // has done the mesure.
+                // And we save the mesure on a specif file, thanks to the dataSaver methods.
+                if(data_size < allDatas.getDatas().size()){
+                    ArrayList<Data> ldata = allDatas.getDatas();
+                    saver.saveData(satName, seq, ldata.get(ldata.size()-1));
+                    saver.updateSeq(satName);    
+                }
             }
         }
         sc.close();

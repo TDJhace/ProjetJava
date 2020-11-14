@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import SatConception.Comps;
 import SatConception.Satellite;
 import SatConception.Components.Imager;
+import SatConception.Components.Locator;
 
 /**
  * This class is a first family of satellites. An instance of this class is a
@@ -26,6 +27,7 @@ public class Fam1 extends Satellite {
         ArrayList<Comps> SubList = new ArrayList<>();
         SubList.add(new Imager("IMAGER1"));
         SubList.add(new Imager("IMAGER2"));
+        SubList.add(new Locator("LOCATOR1"));
         this.Subsystems = SubList;
     }
 
