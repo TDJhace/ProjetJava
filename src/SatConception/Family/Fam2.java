@@ -23,8 +23,8 @@ public class Fam2 extends Satellite {
      * 
      * @param name the name of the satellite. It will be called "FAM2" + name
      */
-    public Fam2(String name) {
-        super("FAM2" + name);
+    public Fam2(String name, String fam) {
+        super("X" + name, fam);
         ArrayList<Comps> SubList = new ArrayList<>();
         SubList.add(new Imager("IMAGER1"));
         SubList.add(new RandomDouble("RANDOM1"));

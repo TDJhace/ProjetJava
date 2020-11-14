@@ -1,21 +1,33 @@
-package  ControlCenter;
+package ControlCenter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import Datas.DataCenter;
 import SatConception.Family.*;
 
 public class UIMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
 
         // First, we create an instance of Datacenter, which will contains all the
         // satellite and datas
         DataCenter allDatas = new DataCenter();
 
+
         // Now we can begin to create satellites by adding them to allDatas
-        allDatas.addSat(new Fam1("SAT1"));
-        allDatas.addSat(new Fam1("SAT2"));
-        allDatas.addSat(new Fam2("SAT"));
+        allDatas.addSat(new Fam1("SAT1","ISAESATS"));
+        allDatas.addSat(new Fam1("SAT2","ISAESATS"));
+        allDatas.addSat(new Fam2("SAT","XSATS"));
+
+        // Creons les Procedures de l'enonce
+
+        allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGESCRIPT");
+        allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGERSEQUENCE");
+        allDatas.addProcedure("REDUNDANT");
+        allDatas.addProcedure("IMAGESEQMAIN");
+        allDatas.addProcedure("IMAGESEQBACKUP");
+        allDatas.addProcedure("REPEAT_IMAGER1DATA_UNTIL_SUCCESS");
 
         // Now it begins with all the scanner part
         String satName = "";
@@ -40,6 +52,8 @@ public class UIMain {
                 System.out.println("FAM2SAT:RANDOMDOUBLE:DATA");
                 System.out.println("FAM1SAT2:IMAGER2:OFF\n");
                 System.out.println("Enter a command below.");
+            } else if(allDatas.VerifInstructionProcedure(instruction)){                         //On verifie si la commande concerne une Procedure existante et compatbible avec le satellite
+                allDatas.teleProcedure(instruction.split(":")[1], instruction.split(":")[0]);   //On lance la TeleOperation de la procedure
             } else {
                 instruction += ": ";
 

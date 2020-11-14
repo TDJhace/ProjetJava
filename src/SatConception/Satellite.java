@@ -10,13 +10,15 @@ import Datas.Data;
 public abstract class Satellite {
     protected String name;
     protected ArrayList<Comps> Subsystems;
+    public String Famille;
 
     /**
      * 
      * @param name the name of the satellite
      */
-    public Satellite(String name) {
+    public Satellite(String name, String fam) {
         this.name = name;
+        this.Famille = fam;
     }
 
     @Override
@@ -26,6 +28,10 @@ public abstract class Satellite {
 
     public String getName() {
         return this.name;
+    }
+
+    public String getFamily(){
+        return this.Famille;
     }
 
     /**
@@ -44,6 +50,7 @@ public abstract class Satellite {
         }
         return null;
     }
+
 
     /**
      * This method implements the operations that the satellite is going to do in
