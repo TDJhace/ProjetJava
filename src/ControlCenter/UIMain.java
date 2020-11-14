@@ -20,7 +20,7 @@ public class UIMain {
         allDatas.addSat(new Fam1("SAT2","ISAESATS"));
         allDatas.addSat(new Fam2("SAT","XSATS"));
 
-        // Creons les Procedures de l'enonce
+        // Creons les Procedures de l'enonce (les fichiers texte sont deja pre-ecris et stockes dans le dossier procedure, on ajoute juste le nom de ces procedure a la liste du dataCenter)
 
         allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGESCRIPT");
         allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGERSEQUENCE");
@@ -52,7 +52,7 @@ public class UIMain {
                 System.out.println("FAM2SAT:RANDOMDOUBLE:DATA");
                 System.out.println("FAM1SAT2:IMAGER2:OFF\n");
                 System.out.println("Enter a command below.");
-            } else if(allDatas.VerifInstructionProcedure(instruction)){                         //On verifie si la commande concerne une Procedure existante et compatbible avec le satellite
+            } else if(allDatas.VerifInstructionProcedure(instruction)){                         //On verifie si la commande concerne une Procedure existante est compatbible avec le satellite
                 allDatas.teleProcedure(instruction.split(":")[1], instruction.split(":")[0]);   //On lance la TeleOperation de la procedure
             } else {
                 instruction += ": ";
