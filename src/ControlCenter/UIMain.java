@@ -24,15 +24,15 @@ public class UIMain {
             saver.CreateSeq("FAM1SAT2");
             saver.CreateSeq("FAM2SAT");
 
-            window w = new window(allDatas, saver);
-            w.setVisible(true);
-
             // Now we can begin to create satellites by adding them to allDatas
             // Moreover, it creates the satellite CHANNELS directories if they don't exist
             // yet
             allDatas.addSat(new Fam1("SAT1"));
             allDatas.addSat(new Fam1("SAT2"));
             allDatas.addSat(new Fam2("SAT"));
+
+            window w = new window(allDatas, saver);
+            w.setVisible(true);
         } catch (Exception e) {
             System.out.println(
                     "An error occured with the files. Please delete all the files in the CHANNELS directory. The program exits automatically.");
