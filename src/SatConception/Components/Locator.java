@@ -5,12 +5,22 @@ import java.util.Random;
 import Datas.Data;
 import SatConception.Comps;
 
+/**
+ * The locator class models a component that gets the positions of a satellite.
+ */
+
 public  class Locator extends Comps {
     
     public Locator(String name) {
         super(name, false);
     }
 
+    /**
+     * Return a random double from the interval [min, max]
+     * @param min lower boundary
+     * @param max upper boundary
+     * @return Return a random double from the interval [min, max]
+     */
     public double generateRandomDoubleinRange(double min, double max){
         if (min >= max) {
             throw new IllegalArgumentException("max has to be greater than min");
@@ -22,6 +32,9 @@ public  class Locator extends Comps {
         return r.nextDouble()*(max-min) + min;
     }
 
+    /**
+     * @return a triplet of coordinates on a double[]
+     */
 
     @Override
     protected Data getMeasure(String satName) {

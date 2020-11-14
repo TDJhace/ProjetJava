@@ -1,6 +1,7 @@
 package DataSearch;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.io.*;
 import Datas.*;
 import java.text.SimpleDateFormat;
@@ -196,8 +197,8 @@ public class DataSearcher {
 
         switch (cdate) {
             /**
-             * This is the case when the usor don't want to add a date criteria to his
-             * research to we take in account all the mesure of hdate.
+             * This is the case when the usor doesn't want to add a date criteria to his
+             * research so we take in account all the mesure of hdate.
              */
             case 0:
                 for(Date d : getHdate().keySet()){
@@ -206,7 +207,7 @@ public class DataSearcher {
             break;
 
             /**
-             * This is the case where the usor wants to add a date criteria on his research.
+             * This is the case when the usor wants to add a date criteria on his research.
              * Then we will have to check all the values of hdate corresponding to the interval
              * [date1, date2] (it's asked to the usor to put a date1 that is before the date2).
              */
@@ -224,9 +225,14 @@ public class DataSearcher {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date1 = sdf.parse(sdate1);
                 Date date2 = sdf.parse(sdate2);
+                //We first check is the date1 is before the date2.
+                if(CompareDate(date1, date2) ==1){
+                    System.out.println("The date1 must be before the date2");
+                    break;
+                }
                 Set<Date> setkeys = getHdate().keySet();
                 Date[] lk = setkeys.toArray(new Date[setkeys.size()]);
-                sort(lk, 0, lk.length - 1);;
+                sort(lk, 0, lk.length - 1);
                 //We check if the date2 is after the first mesure date.
                 // If not, then it has no sense to look ad the mesures taken on the interval [date1,date2].
                 if(CompareDate(lk[0], date2) ==1){
@@ -242,6 +248,7 @@ public class DataSearcher {
                 int flag1 = -1;                    
                 int flag2 = -1;
                 for(Date s : lk){
+                    System.out.println(s.toString());
                     if(flag1 == -1){
                         flag1 = CompareDate(s,date1);
                     }
@@ -262,14 +269,24 @@ public class DataSearcher {
          */
 
         switch (cdata) {
+            /**
+             * This is the case when the usor doesn't want to add a data type criteria to his
+             * research to we take in account all the mesure of hdate.
+             */
             case 0:
                 for(String key : getHdata().keySet()){
                     ldata.addAll(getHdata().get(key));
                 }
                 
                 break;
-        
+            /**
+             * This the case when the usor wants to activate the data type criteria.
+             * We will only take the values of the key corresponding to the data type criteria
+             * from the HashMap hdata. 
+             */
             default:
+                //We use the toLowerCase method so we avoid errors if the usor typed the
+                // date criteria in MAJ or not.
                 String type = datacriteria.toLowerCase();
                 if(type.equals("image")){
                     ldata = getHdata().get("image");
@@ -285,13 +302,24 @@ public class DataSearcher {
                 }
                 break;
         }
+        /**
+         * The last switch is for the satelitte criteria.
+         */
         
         switch (cstat) {
+            /**
+             * Again, this is the case when the usor doesn't want to activate the satelitte criteria.
+             */
             case 0:
                 for(String key : getHsat().keySet()){
                 lsat.addAll(getHsat().get(key));
                 }
                 break;
+            /**
+             * This is whenn the usor wants to activate the satelitte criteria.
+             * We will only take the values of the key corresponding to the satellite names selected
+             * from the HashMap hsats.
+             */
         
             default:
                 String[] sats = satscriteria.split("/");
@@ -300,6 +328,7 @@ public class DataSearcher {
                         lsat.addAll(getHsat().get(nsat));
                     }
                 }
+                //If there is not a satelitte corresponding to the ones available.
                 if(lsat.size() == 0){
                     System.out.println("Invalid name of Sat");
                 } 
@@ -309,16 +338,34 @@ public class DataSearcher {
         System.out.printf("There are %d files according to the statellite criteria \n", lsat.size());
         System.out.printf("There are %d files according to the data criteria \n", ldata.size());
         System.out.printf("There are %d files according to the date criteria \n",ldate.size());
+
+        /**
+         * Once the 3 lists of files ldata, ldate; lsat are filled corresponding to the criteria choosen.
+         * We need to take only the elements that are on the intersection of the tree lists.
+         */
         
-        for(String fln : lsat){
-            if(ldata.contains(fln) && ldate.contains(fln)){
-                lfiles.add(fln);
-            }
-        }
+        Set<String> subresult = ldate.stream()
+        .distinct()
+        .filter(ldata::contains)
+        .collect(Collectors.toSet());
+
+        Set<String> setfiles = subresult.stream()
+        .distinct()
+        .filter(lsat::contains)
+        .collect(Collectors.toSet());
+
+        lfiles.addAll(setfiles);
 
         return lfiles;
                 
     }
+
+    /**
+     * A simple method for comparing to date objects.
+     * @param d1 the first date
+     * @param d2 the second fate
+     * @return 1 if d1 is after d2; -1 is d1 is before d2; 0 is they are at the same time.
+     */
 
     public int CompareDate(Date d1, Date d2){
 
@@ -332,20 +379,18 @@ public class DataSearcher {
             return 0;
         }
     }
+    
+    // The following methods are needed to sort by chronoligical order the set of
+    // keys of the HashMap hdate.
 
-    public boolean isDateIn(String s, Set<Date> st){
-        boolean flag = false;
-        int i;
-        for(Date d : st){
-            i = d.toString().compareTo(s);
-            if(i == 0){
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }
-
+  /**
+   * This the merge method used on the merge sort algorithm.
+   * It basically merges two subarrays a given Date[] array.
+   * @param arr the array to divide on subarrays.
+   * @param l the firts index
+   * @param m the second index
+   * @param r the third index
+   */
     public void merge(Date[] arr, int l, int m, int r){
         
         // Find sizes of two subarrays to be merged
@@ -395,6 +440,15 @@ public class DataSearcher {
             k++;
         }
     }
+    /**
+     * Sorts a given Date[] array using the merge sort algorithm (O(nlog(n))),
+     * time complexity. It uses the merge method defined before.
+     * @param arr the Date[] to sort
+     * @param l index 1 for the merge method
+     * @param r index 2 for the merge method
+     * The sort is done inside the list, without any copy.
+     */
+
     void sort(Date[] arr, int l, int r)
     {
         if (l < r) {
@@ -409,6 +463,10 @@ public class DataSearcher {
             merge(arr, l, m, r);
         }
     }
+    /**
+     * A simple method to print each element of a given ArrayList<String>
+     * @param l the list we want to print the elements.
+     */
 
     public void displayList(ArrayList<String> l){
         for( String s : l){

@@ -4,8 +4,10 @@ import java.util.*;
 
 public class DataSearcherMain {
     public static void main(String[] args) throws Exception {
+        //We create an instance of DataSearcher.
         DataSearcher dtSearch = new DataSearcher();
         Scanner sc = new Scanner(System.in);
+        // And this is the list of the files corrsesponding to the criteria selection.
         ArrayList<String> lfiles = new ArrayList<>();
         System.out.println("Welcome to our data search software !");
         System.out.println("You can search any data made by a satellite, according to the following criteria");
@@ -15,6 +17,7 @@ public class DataSearcherMain {
         System.out.println("If you need more information on how to type a command please ty INSTRUCTIONS");
         while(sc.hasNext()){
             String instruction = sc.nextLine();
+            //The QUIT instruction closes the scanner and quits the program.
             if(instruction.equals("QUIT")){
                 sc.close();
                 System.out.println("Bye !");
@@ -33,10 +36,15 @@ public class DataSearcherMain {
                 System.out.println(instruction);
                 lfiles = dtSearch.SearchData(instruction);
                 int sz = lfiles.size();
+                
+                // If the list of files is lower than 10, we print it on the terminal.
                 if (Integer.compare(sz, 10) == -1 || Integer.compare(sz, 10) == 0){
                     System.out.println("Here are the files corresponding to your criteria");
                     dtSearch.displayList(lfiles);
                 }
+                
+                //If there are to many files corresponding to the criteria research, we dont't give the results.
+                // Instead, we suggest the usor to refine his criteria.
                 else if((sz > 10)){
                     System.out.println("There are two many files corresponding to the criteria you've selected");
                     System.out.println("Please be more precise ");

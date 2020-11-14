@@ -43,6 +43,11 @@ public class Data implements Serializable{
                 + "'" + ", timeData='" + timeData + "'" + "}";
     }
 
+    /**
+     * It's basically a toString for the attribute value of a data.
+     * @return the value convert to a string.
+     */
+
     public String valString(){
         if(this.value instanceof int[][]){
             return (Arrays.deepToString((Object[]) this.value));
@@ -54,6 +59,11 @@ public class Data implements Serializable{
             return this.value.toString();
         }
     }
+
+    /**
+     * A simple method to get the type of the data.
+     * @return The type of the data depending on the instance of the attribute value.
+     */
     
     public String valType(){
         if(this.value instanceof int[][]){

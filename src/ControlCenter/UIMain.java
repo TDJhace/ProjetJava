@@ -67,6 +67,9 @@ public class UIMain {
                 int seq = saver.getSeq(satName);
                 allDatas.teleOperation(satName, compName, typeInstruction);
                 
+                //If a data mesure is done correctly, then we update the sequence of the satellite that
+                // has done the mesure.
+                // And we save the mesure on a specif file, thanks to the dataSaver methods.
                 if(data_size < allDatas.getDatas().size()){
                     ArrayList<Data> ldata = allDatas.getDatas();
                     saver.saveData(satName, seq, ldata.get(ldata.size()-1));
