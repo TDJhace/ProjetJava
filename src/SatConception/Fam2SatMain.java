@@ -7,7 +7,8 @@ import SatConception.Family.Fam2;
 public class Fam2SatMain {
 
     public static void main(String[] args) throws IOException {
-        Fam2 sat = new Fam2("SAT"); // the only thing that differs in the different satellites executables classes
+        Fam2 sat = new Fam2("SAT", "XSATS"); // the only thing that differs in the different satellites executables
+                                             // classes
 
         String satName = sat.getName();
 

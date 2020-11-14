@@ -23,7 +23,7 @@ public class Fam1 extends Satellite {
      * @param name the name of the satellite. It will be called "FAM1" + name
      */
     public Fam1(String name, String fam) {
-        super("ISAE" + name, fam);
+        super("FAM1" + name, fam);
         ArrayList<Comps> SubList = new ArrayList<>();
         SubList.add(new Imager("IMAGER1"));
         SubList.add(new Imager("IMAGER2"));
@@ -37,4 +37,3 @@ public class Fam1 extends Satellite {
     }
 
 }
-
