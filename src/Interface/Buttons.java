@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -11,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import Datas.Data;
 import Datas.DataCenter;
+import Datas.DataSaver;
 import SatConception.Comps;
 import SatConception.Satellite;
 
@@ -19,18 +22,18 @@ public class Buttons {
     private JTabbedPane buttonSat;
 
     // create the JTabedPane of the Satellite in the Datacenter
-    public Buttons(DataCenter allDatas, History history) {
+    public Buttons(DataCenter allDatas, History history, DataSaver dSave) {
         JTabbedPane tabbedPane = new JTabbedPane();
         ArrayList<Satellite> sats = allDatas.getSats();
         for (Satellite sat : sats) {
-            tabbedPane.addTab(sat.getName(), creates(sat, allDatas, history));
+            tabbedPane.addTab(sat.getName(), creates(sat, allDatas, history, dSave));
         }
         buttonSat = tabbedPane;
     }
 
     // create a grid of JLabel and JButton containing the subsystems of the
     // Satellite Sat
-    public JPanel creates(Satellite sat, DataCenter allDatas, History history) {
+    public JPanel creates(Satellite sat, DataCenter allDatas, History history, DataSaver dSave) {
         ArrayList<Comps> subsystem = sat.getSubsystems();
         JPanel panel = new JPanel();
         GridLayout gridLayout = new GridLayout(subsystem.size(), 4);
@@ -56,7 +59,15 @@ public class Buttons {
             panel.add(data);
             data.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    Listener(e, allDatas, sat, sub, history, "DATA", button);
+                    try {
+                        Listener2(e, allDatas, sat, sub, history, button, dSave);
+                    } catch (ClassNotFoundException e1) {
+                        
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                    
+                        e1.printStackTrace();
+                    }
                 }
             });
         }
@@ -65,9 +76,26 @@ public class Buttons {
 
     // add a coloredline on history when a button is used
     public void Listener(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history, String s,
-            JLabel button) {
+            JLabel button){
         String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
         if (result.equals("OK")) {
+            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
+            button.setForeground(Color.GREEN);
+        } else {
+            history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.RED);
+            button.setForeground(Color.RED);
+        }
+    }
+    public void Listener2(ActionEvent e, DataCenter allDatas, Satellite sat, Comps sub, History history,
+            JLabel button, DataSaver dSave) throws ClassNotFoundException, IOException {
+        String s = "DATA";
+        String result = allDatas.teleOperation(sat.getName(), sub.getName(), s);
+        if (result.equals("OK")) {
+            
+            int seq = dSave.getSeq(sat.getName());
+            ArrayList<Data> ldata = allDatas.getDatas();
+            dSave.saveData(sat.getName(), seq, ldata.get(ldata.size()-1));
+            dSave.updateSeq(sat.getName());
             history.addColoredLine(sat.getName() + ":" + sub.getName() + ":" + s + "\n", Color.GREEN);
             button.setForeground(Color.GREEN);
         } else {

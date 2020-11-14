@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Datas.*;
+import Interface.window;
 import SatConception.Family.*;
 
 
@@ -23,6 +24,9 @@ public class UIMain {
         saver.CreateSeq("FAM1SAT2");
         allDatas.addSat(new Fam2("SAT"));
         saver.CreateSeq("FAM2SAT");
+
+        window w = new window(allDatas, saver);
+        w.setVisible(true);
 
         // Now it begins with all the scanner part
         String satName = "";

@@ -8,19 +8,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import Datas.DataCenter;
+import Datas.DataSaver;
 
 public class window extends JFrame {
     private static final long serialVersionUID = 1L;
 
     // create a window with an instance of button, and an instance of history
-    public window(DataCenter allDatas) {
+    public window(DataCenter allDatas, DataSaver dsave) {
         super("Control Center");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(300, 300);
         this.setLocationRelativeTo(null);
         JPanel contentPane = (JPanel) this.getContentPane();
         History history = new History();
-        Buttons buttons = new Buttons(allDatas, history);
+        Buttons buttons = new Buttons(allDatas, history,dsave);
         JScrollPane scroll = new JScrollPane(history);
         JLabel label = new JLabel("<html><body><b><u>T/C History</u></b></body></html>");
         scroll.setColumnHeaderView(label);
