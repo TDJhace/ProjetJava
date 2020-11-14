@@ -36,6 +36,11 @@ public class DataCenter {
 
     }
 
+    public ArrayList<String> getListDatas() {
+        return this.listDatas;
+    }
+
+
     /**
      * Just a simple method to add a satellite to the DataCenter.
      * 
