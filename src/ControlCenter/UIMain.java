@@ -36,6 +36,7 @@ public class UIMain {
         } catch (Exception e) {
             System.out.println(
                     "An error occured with the files. Please delete all the files in the CHANNELS directory. The program exits automatically.");
+            e.printStackTrace();
             System.exit(0);
         }
 
