@@ -90,7 +90,7 @@ public class UIMain {
             } else if (allDatas.VerifInstructionProcedure(instruction)) { // On verifie si la commande concerne une
                                                                           // Procedure existante est compatbible avec le
                                                                           // satellite
-                allDatas.teleProcedure(instruction.split(":")[1], instruction.split(":")[0]); // On lance la
+                allDatas.teleProcedure(instruction.split(":")[1], instruction.split(":")[0], saver); // On lance la
                                                                                               // TeleOperation de la
                                                                                               // procedure
             } else {

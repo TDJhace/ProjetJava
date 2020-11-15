@@ -365,7 +365,7 @@ public class DataCenter {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public void teleProcedure(String name, String SatName) throws ClassNotFoundException, InterruptedException {
+    public void teleProcedure(String name, String SatName, DataSaver dSave) throws ClassNotFoundException, InterruptedException {
         Boolean statut = false;
         String DerniereLigne = "";
         Boolean PrendreEnCompteCetteLigne = true;
@@ -383,10 +383,10 @@ public class DataCenter {
                                                                                                      // s'applique bien
                                                                                                      // a la famille de
                                                                                                      // ce satellite
-                                statut = this.SousProcedure(line, SatName);
+                                statut = this.SousProcedure(line, SatName, dSave);
                             }
                         } else {
-                            statut = this.SousProcedure(line, SatName); // Si la sous-procedure ne concerne pas une
+                            statut = this.SousProcedure(line, SatName, dSave); // Si la sous-procedure ne concerne pas une
                                                                         // famille de satellite en particulier
                                                                         // (ex:REDUNDANT), alors on peut l'appliquer au
                                                                         // satellite
@@ -400,7 +400,14 @@ public class DataCenter {
                         compName = line.split(":")[0];
                         typeInstruction = line.split(":")[1];
                         statut = this.teleOperation(SatName, compName, typeInstruction).equals("OK"); // Si c'est le
-                                                                                                      // cas, on fait
+                        if(typeInstruction.equals("DATA")){
+                            if(statut){
+                                int seq = dSave.getSeq(SatName);
+                                ArrayList<Data> ldata = this.getDatas();
+                                dSave.saveData(SatName, seq, ldata.get(ldata.size() - 1));
+                                dSave.updateSeq(SatName);
+                            }
+                        }                                                                           // cas, on fait
                                                                                                       // appel a
                                                                                                       // teleOperationProcedure
                                                                                                       // pour executer
@@ -414,13 +421,21 @@ public class DataCenter {
                             for (int i = 0; i < n; i++) {
                                 if (this.FindProcedure(DerniereLigne)) {
                                     if (this.getSatByName(SatName).getFamily().equals(DerniereLigne.split("/")[1])) {
-                                        statut = this.SousProcedure(DerniereLigne, SatName);
+                                        statut = this.SousProcedure(DerniereLigne, SatName, dSave);
                                     }
                                 }
                                 if (this.Verifligne(DerniereLigne)) {
                                     compName = DerniereLigne.split(":")[0];
                                     typeInstruction = DerniereLigne.split(":")[0];
                                     statut = this.teleOperation(SatName, compName, typeInstruction).equals("OK");
+                                    if(typeInstruction.equals("DATA")){
+                                        if(statut){
+                                            int seq = dSave.getSeq(SatName);
+                                            ArrayList<Data> ldata = this.getDatas();
+                                            dSave.saveData(SatName, seq, ldata.get(ldata.size() - 1));
+                                            dSave.updateSeq(SatName);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -472,7 +487,7 @@ public class DataCenter {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public Boolean SousProcedure(String name, String SatName) throws ClassNotFoundException, InterruptedException {
+    public Boolean SousProcedure(String name, String SatName, DataSaver dSave) throws ClassNotFoundException, InterruptedException {
         Boolean statut = false;
         String DerniereLigne = "";
         Boolean PrendreEnCompteCetteLigne = true;
@@ -490,10 +505,10 @@ public class DataCenter {
                                                                                                      // s'applique bien
                                                                                                      // a la famille de
                                                                                                      // ce satellite
-                                statut = this.SousProcedure(line, SatName);
+                                statut = this.SousProcedure(line, SatName, dSave);
                             }
                         } else {
-                            statut = this.SousProcedure(line, SatName);
+                            statut = this.SousProcedure(line, SatName, dSave);
 
                         }
                     }
@@ -503,6 +518,14 @@ public class DataCenter {
                         compName = line.split(":")[0];
                         typeInstruction = line.split(":")[1];
                         statut = this.teleOperation(SatName, compName, typeInstruction).equals("OK");
+                        if(typeInstruction.equals("DATA")){
+                            if(statut){
+                                int seq = dSave.getSeq(SatName);
+                                ArrayList<Data> ldata = this.getDatas();
+                                dSave.saveData(SatName, seq, ldata.get(ldata.size() - 1));
+                                dSave.updateSeq(SatName);
+                            }
+                        }
                     }
                     if (line.split(" ").length == 2) { // detecion eventuelle d'un REPEAT
                         if (line.substring(0, 5).equals("REPEAT")) {
@@ -511,13 +534,21 @@ public class DataCenter {
                             for (int i = 0; i < n; i++) {
                                 if (this.FindProcedure(DerniereLigne)) {
                                     if (this.getSatByName(SatName).getFamily().equals(DerniereLigne.split("/")[1])) {
-                                        statut = this.SousProcedure(DerniereLigne, SatName);
+                                        statut = this.SousProcedure(DerniereLigne, SatName, dSave);
                                     }
                                 }
                                 if (this.Verifligne(DerniereLigne)) {
                                     compName = DerniereLigne.split(":")[0];
                                     typeInstruction = DerniereLigne.split(":")[0];
                                     statut = this.teleOperation(SatName, compName, typeInstruction).equals("OK");
+                                    if(typeInstruction.equals("DATA")){
+                                        if(statut){
+                                            int seq = dSave.getSeq(SatName);
+                                            ArrayList<Data> ldata = this.getDatas();
+                                            dSave.saveData(SatName, seq, ldata.get(ldata.size() - 1));
+                                            dSave.updateSeq(SatName);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -544,7 +575,7 @@ public class DataCenter {
                                         while (statut == false) {
                                             if (this.getSatByName(SatName).getFamily()
                                                     .equals(line.split("_")[1].split("/")[1])) {
-                                                statut = this.SousProcedure(line.split("_")[1], SatName);
+                                                statut = this.SousProcedure(line.split("_")[1], SatName, dSave);
                                             }
                                         }
                                     }
