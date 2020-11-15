@@ -106,6 +106,8 @@ public class Buttons {
 
     }
 
+    // add a coloredline on history and store the data of the Satellite sat when the
+    // data button is used
     public void Listener2(ActionEvent f, DataCenter allDatas, Satellite sat, Comps sub, History history, JLabel button,
             DataSaver dSave) throws ClassNotFoundException, IOException {
         String s = "DATA";

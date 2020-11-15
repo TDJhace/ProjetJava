@@ -20,6 +20,7 @@ public class UIMain {
         try {
             // We delete all the existing files in the directories
             allDatas.endProgram();
+
             saver.CreateSeq("FAM1SAT1");
             saver.CreateSeq("FAM1SAT2");
             saver.CreateSeq("FAM2SAT");

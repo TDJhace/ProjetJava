@@ -1,6 +1,7 @@
 package Interface;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,15 +18,18 @@ public class window extends JFrame {
     public window(DataCenter allDatas, DataSaver dsave) {
         super("Control Center");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(300, 300);
+        this.setSize(400, 400);
         this.setLocationRelativeTo(null);
         JPanel contentPane = (JPanel) this.getContentPane();
         History history = new History();
-        Buttons buttons = new Buttons(allDatas, history,dsave);
+        Buttons buttons = new Buttons(allDatas, history, dsave);
         JScrollPane scroll = new JScrollPane(history);
         JLabel label = new JLabel("<html><body><b><u>T/C History</u></b></body></html>");
         scroll.setColumnHeaderView(label);
-        contentPane.add(buttons.getButtonSat(), BorderLayout.NORTH);
-        contentPane.add(scroll, BorderLayout.CENTER);
+        comboBox comboBox = new comboBox();
+        contentPane.add(comboBox.getCbox(), BorderLayout.NORTH);
+        contentPane.add(buttons.getButtonSat(), BorderLayout.CENTER);
+        scroll.setPreferredSize(new Dimension(0, 200));
+        contentPane.add(scroll, BorderLayout.SOUTH);
     }
 }
