@@ -42,10 +42,6 @@ public class DataCenter {
 
     }
 
-    public ArrayList<Data> getListDatas() {
-        return this.listDatas;
-    }
-
     /**
      * Ajoute une procedure a la liste des procedures pree-enregistrees
      * 
