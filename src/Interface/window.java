@@ -18,7 +18,7 @@ public class window extends JFrame {
     public window(DataCenter allDatas, DataSaver dsave) {
         super("Control Center");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 400);
+        this.setSize(350, 400);
         this.setLocationRelativeTo(null);
         JPanel contentPane = (JPanel) this.getContentPane();
         History history = new History();
