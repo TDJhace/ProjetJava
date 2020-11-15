@@ -26,7 +26,7 @@ public class window extends JFrame {
         JScrollPane scroll = new JScrollPane(history);
         JLabel label = new JLabel("<html><body><b><u>T/C History</u></b></body></html>");
         scroll.setColumnHeaderView(label);
-        comboBox comboBox = new comboBox();
+        comboBox comboBox = new comboBox(allDatas, history);
         contentPane.add(comboBox.getCbox(), BorderLayout.NORTH);
         contentPane.add(buttons.getButtonSat(), BorderLayout.CENTER);
         scroll.setPreferredSize(new Dimension(0, 200));

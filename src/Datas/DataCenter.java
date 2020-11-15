@@ -42,10 +42,6 @@ public class DataCenter {
 
     }
 
-    public ArrayList<Data> getListDatas() {
-        return this.listDatas;
-    }
-
     /**
      * Ajoute une procedure a la liste des procedures pree-enregistrees
      * 
@@ -465,9 +461,9 @@ public class DataCenter {
             e.printStackTrace();
         }
         if (statut) {
-            System.out.println("OK");
+            return "OK";
         } else {
-            System.out.println("KO");
+            return "KO";
         }
     }
 
