@@ -27,7 +27,7 @@ public class DataSearcherMain {
                 System.out.println("The date format must be the following one :");
                 System.out.println("year-month-day hour:minute:second");
                 System.out.println("The date1 must be before the date 2");
-                System.out.println("There are 3 available satellites : FAM1SAT1, FAM1SAT2 and FAM2SAT2");
+                System.out.println("There are 3 available satellites : FAM1SAT1, FAM1SAT2 and FAM2SAT");
             }
             else if(instruction.equals("EXAMPLE")){
                 System.out.println("2020-11-12 21:00:00/2020-11-12 21:00:10;image;FAM1SAT1");
@@ -39,7 +39,7 @@ public class DataSearcherMain {
                 
                 // If the list of files is lower than 10, we print it on the terminal.
                 if (sz <= 10 ){
-                    System.out.printf("There are %d files according to yours criteria \n",lfiles.size());
+                    System.out.printf("There are %d data according to yours criteria \n",lfiles.size());
                     dtSearch.displayList(dtSearch.results(lfiles));
                 }
                 

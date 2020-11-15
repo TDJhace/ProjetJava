@@ -164,7 +164,7 @@ public class DataSearcher {
          * character ";", that is used to separe the different type
          * of criteria.
          */
-            
+
         int[] listidx = new int[2];
         listidx[0] = Criteria.indexOf(";");
         listidx[1] = Criteria.indexOf(";", listidx[0]+1);
@@ -473,6 +473,13 @@ public class DataSearcher {
             System.out.println(d.toString());
         }
     }
+    /**
+     * Reads the content of the files on the Array List of files.
+     * @param lfiles the ArrayList of files.
+     * @return an ArrayList<Data> of all the data red.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
 
     public ArrayList<Data> results(ArrayList<String> lfiles) throws IOException, ClassNotFoundException {
         ArrayList<Data> ld = new ArrayList<>();
