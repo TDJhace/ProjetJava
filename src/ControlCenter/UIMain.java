@@ -23,14 +23,8 @@ public class UIMain {
             // We delete all the existing files in the directories
             allDatas.endProgram();
 
+            // update the data center and the data saver
             satelliteCreator("SatList/SatList.txt", allDatas, saver);
-
-            // saver.CreateSeq("FAM1SAT1");
-            // saver.CreateSeq("FAM1SAT2");
-            // saver.CreateSeq("FAM2SAT");
-            // allDatas.addSat(new Fam2("SAT", "XSATS"));
-            // allDatas.addSat(new Fam1("SAT1", "ISAESATS"));
-            // allDatas.addSat(new Fam1("SAT2", "ISAESATS"));
 
             allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGESCRIPT");
             allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGERSEQUENCE");
