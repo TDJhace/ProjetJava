@@ -39,8 +39,8 @@ public class DataSearcherMain {
                 
                 // If the list of files is lower than 10, we print it on the terminal.
                 if (sz <= 10 ){
-                    System.out.printf("There are %d files according to the date criteria \n",lfiles.size());
-                    dtSearch.displayList(lfiles);
+                    System.out.printf("There are %d files according to yours criteria \n",lfiles.size());
+                    dtSearch.displayList(dtSearch.results(lfiles));
                 }
                 
                 //If there are to many files corresponding to the criteria research, we dont't give the results.
