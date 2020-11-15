@@ -12,8 +12,9 @@ public class comboBox {
     private JComboBox<String> cbox;
 
     public comboBox(DataCenter allDatas, History history) {
-        cbox = new JComboBox<>(
-                new String[] { "Procedures ?", "FAM1SAT1:SCRIPTS/ISAESATS/IMAGESCRIPT", "FAM1SAT1:REDUNDANT" });
+        cbox = new JComboBox<>(new String[] { "Procedures ?", "FAM1SAT1:SCRIPTS/ISAESATS/IMAGESCRIPT",
+                "FAM1SAT2:SCRIPTS/ISAESATS/IMAGESCRIPT", "FAM1SAT1:REDUNDANT", "FAM1SAT2:REDUNDANT",
+                "FAM2SAT:REDUNDANT" });
         cbox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 e.getSource();
