@@ -365,7 +365,7 @@ public class DataCenter {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public void teleProcedure(String name, String SatName) throws ClassNotFoundException, InterruptedException {
+    public String teleProcedure(String name, String SatName) throws ClassNotFoundException, InterruptedException {
         Boolean statut = false;
         String DerniereLigne = "";
         Boolean PrendreEnCompteCetteLigne = true;
@@ -450,9 +450,9 @@ public class DataCenter {
             e.printStackTrace();
         }
         if (statut) {
-            System.out.println("OK");
+            return "OK";
         } else {
-            System.out.println("KO");
+            return "KO";
         }
     }
 

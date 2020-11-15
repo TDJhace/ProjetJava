@@ -1,5 +1,7 @@
 package ControlCenter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -21,12 +23,14 @@ public class UIMain {
             // We delete all the existing files in the directories
             allDatas.endProgram();
 
-            saver.CreateSeq("FAM1SAT1");
-            saver.CreateSeq("FAM1SAT2");
-            saver.CreateSeq("FAM2SAT");
-            allDatas.addSat(new Fam2("SAT", "XSATS"));
-            allDatas.addSat(new Fam1("SAT1", "ISAESATS"));
-            allDatas.addSat(new Fam1("SAT2", "ISAESATS"));
+            satelliteCreator("SatList/SatList.txt", allDatas, saver);
+
+            // saver.CreateSeq("FAM1SAT1");
+            // saver.CreateSeq("FAM1SAT2");
+            // saver.CreateSeq("FAM2SAT");
+            // allDatas.addSat(new Fam2("SAT", "XSATS"));
+            // allDatas.addSat(new Fam1("SAT1", "ISAESATS"));
+            // allDatas.addSat(new Fam1("SAT2", "ISAESATS"));
 
             allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGESCRIPT");
             allDatas.addProcedure("SCRIPTS/ISAESATS/IMAGERSEQUENCE");
@@ -131,5 +135,25 @@ public class UIMain {
         System.out.println(allDatas.getDatas());
         System.out.println("\nNumber of datas : " + allDatas.getDatas().size());
         System.out.println("");
+    }
+
+    public static void satelliteCreator(String file, DataCenter allDatas, DataSaver saver) throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        int nbrSat = Integer.parseInt(reader.readLine());
+        for (int k = 0; k < nbrSat; k++) {
+            String name = reader.readLine();
+            int family = Integer.parseInt(reader.readLine());
+            saver.CreateSeq("FAM" + family + name);
+            if (family == 1) {
+                allDatas.addSat(new Fam1(name, "ISAESATS"));
+            } else {
+                if (family == 2) {
+                    allDatas.addSat(new Fam2(name, "XSATS"));
+                } else {
+                    System.out.println("family " + family + " doesn't exist");
+                }
+            }
+        }
+        reader.close();
     }
 }
