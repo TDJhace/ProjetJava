@@ -361,7 +361,7 @@ public class DataCenter {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public void teleProcedure(String name, String SatName, DataSaver dSave) throws ClassNotFoundException, InterruptedException {
+    public String teleProcedure(String name, String SatName, DataSaver dSave) throws ClassNotFoundException, InterruptedException {
         Boolean statut = false;
         String DerniereLigne = "";
         Boolean PrendreEnCompteCetteLigne = true;
